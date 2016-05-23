@@ -29,17 +29,24 @@ and run from Terminal.
          %h_accuracy  (meters)
          %v_accuracy  (meters)
          %time
-
+         %address	  (revsere geocode location)
+	
+      the format defaults to '%%latitude/%%longitude (%%address)
+      
 # Output example
 
-    ./CoreLocationCLI 
-    <+39.96034992, -75.18981059> +/- 154.00m (speed -1.00 mps / course -1.00) @ 2010-07-30 12:35:01 -0400
-    <+39.96036986, -75.18980353> +/- 157.00m (speed 0.00 mps / course -1.00) @ 2010-07-30 12:35:40 -0400
-    <+39.96036986, -75.18980353> +/- 157.00m (speed 0.00 mps / course -1.00) @ 2010-07-30 12:35:48 -0400^C
-    
-    ./CoreLocationCLI -once yes -format '%latitude : %longitude'
-    39.96036986 : -75.18980353
+./CoreLocationCLI
 
+
+	50.9438299979853/6.94104380198676 (Kaiser-Wilhelm-Ring 21
+	Cologne North Rhine-Westphalia 50672
+	Germany)
+    
+./CoreLocationCLI -once yes -format '%latitude : %longitude'
+
+
+	50.9438299979853 6.94104380198676
+	
 # Building
 
 To build this from the command line, run the compiler:

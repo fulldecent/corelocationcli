@@ -8,12 +8,15 @@
 
 import Foundation
 import CoreLocation
+import Contacts
 
 class Delegate: NSObject, CLLocationManagerDelegate {
     let locationManager = CLLocationManager()
+    let geoCoder = CLGeocoder()
+    
     var once = false
     var verbose = false
-    var format: String? = nil
+    var format: String = "%latitude/%longitude (%address)"
     
     func start() -> Void {
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -23,15 +26,19 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             print("locationServicesEnabled: \(CLLocationManager.locationServicesEnabled())")
             print("significantLocationChangeMonitoringAvailable: \(CLLocationManager.significantLocationChangeMonitoringAvailable())")
             print("headingAvailable: \(CLLocationManager.headingAvailable())")
-            print("regionMonitoringAvailable: \(CLLocationManager.regionMonitoringAvailable)")
+            print("regionMonitoringAvailable for CLRegion: \(CLLocationManager.isMonitoringAvailableForClass(CLRegion))")
         }
         self.locationManager.startUpdatingLocation()
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateToLocation newLocation: CLLocation, fromLocation oldLocation: CLLocation)
-    {
-        if let format = self.format {
-            var output = format
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [AnyObject]) {
+        guard let newLocation = locations.first as? CLLocation else {
+            return;
+        }
+        
+        var output = self.format
+
+        let helper : ((address: String)->Void) = { address in
             output = output.stringByReplacingOccurrencesOfString("%latitude", withString: "\(newLocation.coordinate.latitude)")
             output = output.stringByReplacingOccurrencesOfString("%longitude", withString: "\(newLocation.coordinate.longitude)")
             output = output.stringByReplacingOccurrencesOfString("%altitude", withString: "\(newLocation.altitude)")
@@ -40,12 +47,34 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             output = output.stringByReplacingOccurrencesOfString("%h_accuracy", withString: "\(Int(newLocation.horizontalAccuracy))")
             output = output.stringByReplacingOccurrencesOfString("%v_accuracy", withString: "\(Int(newLocation.verticalAccuracy))")
             output = output.stringByReplacingOccurrencesOfString("%time", withString: newLocation.timestamp.description)
+            output = output.stringByReplacingOccurrencesOfString("%address", withString: address)
+
             print(output)
-        } else {
-            print("\(newLocation.description)")
+            
+            if self.once {
+                exit(0)
+            }
+            else {
+                self.locationManager.startUpdatingLocation()
+            }
         }
-        if self.once {
-            exit(0)
+        
+
+        if format.rangeOfString("%address") != nil {
+            self.locationManager.stopUpdatingLocation()
+            self.geoCoder.reverseGeocodeLocation(newLocation, completionHandler: { (placemarks, error) in
+                if let postalAddress = placemarks?.first?.postalAddress {
+                    let  str = CNPostalAddressFormatter.stringFromPostalAddress(postalAddress, style: CNPostalAddressFormatterStyle.MailingAddress)
+                    helper(address:str)
+                }
+                else {
+                    helper(address: "?")
+                }
+            })
+            
+        }
+        else {
+            helper(address:"")
         }
     }
     
@@ -74,6 +103,9 @@ func help() {
     print("     %%h_accuracy  (meters)")
     print("     %%v_accuracy  (meters)")
     print("     %%time")
+    print("     %%address     (revsere geocode location)")
+    print("")
+    print("  the format defaults to '%%latitude/%%longitude (%%address)")
     print("")
 }
 
@@ -85,7 +117,9 @@ if Process.arguments.count > 0 && Process.arguments[0] == "-h" {
 
 let args = NSUserDefaults.standardUserDefaults()
 let delegate = Delegate()
-delegate.format = args.stringForKey("format")
+if let format = args.stringForKey("format") {
+    delegate.format = format
+}
 delegate.verbose = args.boolForKey("verbose")
 delegate.once = args.boolForKey("once")
 delegate.start()
