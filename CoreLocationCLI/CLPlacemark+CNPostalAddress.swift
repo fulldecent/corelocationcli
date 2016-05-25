@@ -14,7 +14,6 @@ extension CLPlacemark {
             guard let addressdictionary = self.addressDictionary else {
                 return nil
             }
-            
             let address = CNMutablePostalAddress()
             address.street = addressdictionary["Street"] as? String ?? ""
             address.state = addressdictionary["State"] as? String ?? ""
