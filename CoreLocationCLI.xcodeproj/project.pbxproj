@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B34796D41CF3319600088BED /* CLPlacemark+CNPostalAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34796D31CF3319600088BED /* CLPlacemark+CNPostalAddress.swift */; };
 		D97137001C38867000BA5442 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97136FF1C38867000BA5442 /* main.swift */; };
-		D97137071C38869900BA5442 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D97137061C38869900BA5442 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,9 +24,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		D97136FC1C38867000BA5442 /* CoreLocationCLI.temp_caseinsensitive_rename */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CoreLocationCLI.temp_caseinsensitive_rename; sourceTree = BUILT_PRODUCTS_DIR; };
+		B34796D31CF3319600088BED /* CLPlacemark+CNPostalAddress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CLPlacemark+CNPostalAddress.swift"; path = "CoreLocationCLI/CLPlacemark+CNPostalAddress.swift"; sourceTree = "<group>"; };
+		D97136FC1C38867000BA5442 /* CoreLocationCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CoreLocationCLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		D97136FF1C38867000BA5442 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = main.swift; path = corelocationcli/main.swift; sourceTree = "<group>"; };
-		D97137061C38869900BA5442 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,7 +34,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D97137071C38869900BA5442 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,8 +43,8 @@
 		D97136F31C38866F00BA5442 = {
 			isa = PBXGroup;
 			children = (
+				B34796D31CF3319600088BED /* CLPlacemark+CNPostalAddress.swift */,
 				D97136FF1C38867000BA5442 /* main.swift */,
-				D97137061C38869900BA5442 /* CoreLocation.framework */,
 				D97136FD1C38867000BA5442 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -53,7 +52,7 @@
 		D97136FD1C38867000BA5442 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D97136FC1C38867000BA5442 /* CoreLocationCLI.temp_caseinsensitive_rename */,
+				D97136FC1C38867000BA5442 /* CoreLocationCLI */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,7 +74,7 @@
 			);
 			name = CoreLocationCLI;
 			productName = corelocationcli;
-			productReference = D97136FC1C38867000BA5442 /* CoreLocationCLI.temp_caseinsensitive_rename */;
+			productReference = D97136FC1C38867000BA5442 /* CoreLocationCLI */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -115,6 +114,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B34796D41CF3319600088BED /* CLPlacemark+CNPostalAddress.swift in Sources */,
 				D97137001C38867000BA5442 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -205,14 +205,16 @@
 		D97137041C38867000BA5442 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = CoreLocationCLI.temp_caseinsensitive_rename;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				PRODUCT_NAME = CoreLocationCLI;
 			};
 			name = Debug;
 		};
 		D97137051C38867000BA5442 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				PRODUCT_NAME = CoreLocationCLI.temp_caseinsensitive_rename;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				PRODUCT_NAME = CoreLocationCLI;
 			};
 			name = Release;
 		};
