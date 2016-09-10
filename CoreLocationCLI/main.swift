@@ -28,55 +28,57 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             print("deferredLocationUpdatesAvailable: \(CLLocationManager.deferredLocationUpdatesAvailable())")
             print("significantLocationChangeMonitoringAvailable: \(CLLocationManager.significantLocationChangeMonitoringAvailable())")
             print("headingAvailable: \(CLLocationManager.headingAvailable())")
-            print("regionMonitoringAvailable for CLRegion: \(CLLocationManager.isMonitoringAvailableForClass(CLRegion))")
+            print("regionMonitoringAvailable for CLRegion: \(CLLocationManager.isMonitoringAvailable(for: CLRegion.self))")
         }
         self.locationManager.startUpdatingLocation()
     }
     
     func printFormattedLocation(location: CLLocation, address: String? = nil) {
         var output = self.format
-        output = output.stringByReplacingOccurrencesOfString("%latitude", withString: String(format: "%+.6f", location.coordinate.latitude))
-        output = output.stringByReplacingOccurrencesOfString("%longitude", withString: String(format: "%+.6f", location.coordinate.longitude))
-        output = output.stringByReplacingOccurrencesOfString("%altitude", withString: "\(location.altitude)")
-        output = output.stringByReplacingOccurrencesOfString("%direction", withString: "\(location.course)")
-        output = output.stringByReplacingOccurrencesOfString("%speed", withString: "\(Int(location.speed))")
-        output = output.stringByReplacingOccurrencesOfString("%h_accuracy", withString: "\(Int(location.horizontalAccuracy))")
-        output = output.stringByReplacingOccurrencesOfString("%v_accuracy", withString: "\(Int(location.verticalAccuracy))")
-        output = output.stringByReplacingOccurrencesOfString("%time", withString: location.timestamp.description)
+        output = output.replacingOccurrences(of: "%latitude", with: String(format: "%+.6f", location.coordinate.latitude))
+        output = output.replacingOccurrences(of: "%longitude", with: String(format: "%+.6f", location.coordinate.longitude))
+        output = output.replacingOccurrences(of: "%altitude", with: "\(location.altitude)")
+        output = output.replacingOccurrences(of: "%direction", with: "\(location.course)")
+        output = output.replacingOccurrences(of: "%speed", with: "\(Int(location.speed))")
+        output = output.replacingOccurrences(of: "%h_accuracy", with: "\(Int(location.horizontalAccuracy))")
+        output = output.replacingOccurrences(of: "%v_accuracy", with: "\(Int(location.verticalAccuracy))")
+        output = output.replacingOccurrences(of: "%time", with: location.timestamp.description)
         if let address = address {
-            output = output.stringByReplacingOccurrencesOfString("%address", withString: address)
+            output = output.replacingOccurrences(of: "%address", with: address)
         }
         print(output)
         if self.once {
             exit(0)
         }
+        
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [AnyObject]) {
-        let location = locations.first as! CLLocation
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location = locations.first!
         
-        if format.rangeOfString("%address") != nil {
+        if format.range(of: "%address") != nil {
             self.locationManager.stopUpdatingLocation()
             self.geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
                 if let postalAddress = placemarks?.first?.postalAddress {
-                    let formattedAddress = CNPostalAddressFormatter.stringFromPostalAddress(postalAddress, style: CNPostalAddressFormatterStyle.MailingAddress)
-                    self.printFormattedLocation(location, address: formattedAddress)
+                    let formattedAddress = CNPostalAddressFormatter.string(from: postalAddress, style: CNPostalAddressFormatterStyle.mailingAddress)
+                    self.printFormattedLocation(location: location, address: formattedAddress)
                 }
                 else {
-                    self.printFormattedLocation(location, address: "?")
+                    self.printFormattedLocation(location: location, address: "?")
                 }
                 self.locationManager.startUpdatingLocation()
             })
         } else {
-            printFormattedLocation(location)
+            printFormattedLocation(location: location)
         }
     }
     
-    func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("LOCATION MANAGER ERROR: \(error.localizedDescription)")
         exit(1)
     }
 }
+
 
 func help() {
     print("USAGE: CoreLocationCLI [options]")
@@ -104,7 +106,7 @@ func help() {
 }
 
 let delegate = Delegate()
-for (i, argument) in Process.arguments.enumerate() {
+for (i, argument) in ProcessInfo().arguments.enumerated() {
     switch argument {
     case "-h":
         help()
@@ -114,8 +116,8 @@ for (i, argument) in Process.arguments.enumerate() {
     case "-verbose":
         delegate.verbose = true
     case "-format":
-        if Process.arguments.count > i+1 {
-            delegate.format = Process.arguments[i+1]
+        if ProcessInfo().arguments.count > i+1 {
+            delegate.format = ProcessInfo().arguments[i+1]
         }
     default:
         break
@@ -123,7 +125,6 @@ for (i, argument) in Process.arguments.enumerate() {
 }
 delegate.start()
 
-autoreleasepool({
-    var runLoop: NSRunLoop = NSRunLoop.mainRunLoop()
-    runLoop.run()
-})
+autoreleasepool {
+    RunLoop.main.run()
+}
