@@ -46,9 +46,24 @@ class Delegate: NSObject, CLLocationManagerDelegate {
         if let address = address {
             output = output.stringByReplacingOccurrencesOfString("%address", withString: address)
         }
-        print(output)
+        print("Location: \(output)")
         if self.once {
             exit(0)
+        }
+    }
+
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        switch status {
+        case .Authorized:
+            print("Location access authorized.")
+        case .NotDetermined:
+            print("Undetermined location access.")
+        case .Denied:
+            print("User denied location access. Exiting.")
+            exit(1)
+        case .Restricted:
+            print("Location access restricted. Exiting.")
+            exit(1)
         }
     }
     
