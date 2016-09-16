@@ -31,7 +31,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             print("headingAvailable: \(CLLocationManager.headingAvailable())")
             print("regionMonitoringAvailable for CLRegion: \(CLLocationManager.isMonitoringAvailable(for: CLRegion.self))")
         }
-        let _ = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(self.timeout), userInfo: nil, repeats: false)
+        let _ = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.timeout), userInfo: nil, repeats: false)
         self.locationManager.startUpdatingLocation()
     }
 
@@ -42,7 +42,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    func printFormattedLocation(location: CLLocation, address: String? = nil) {
+    func printFormattedLocation(_ location: CLLocation, address: String? = nil) {
         var output = self.format
         output = output.replacingOccurrences(of: "%latitude", with: String(format: "%+.6f", location.coordinate.latitude))
         output = output.replacingOccurrences(of: "%longitude", with: String(format: "%+.6f", location.coordinate.longitude))
@@ -62,39 +62,41 @@ class Delegate: NSObject, CLLocationManagerDelegate {
         
     }
 
-    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
-        case .Authorized:
+        case .authorizedAlways:
             print("Location access authorized.")
-        case .NotDetermined:
+        case .notDetermined:
             print("Undetermined location access.")
-        case .Denied:
+        case .denied:
             print("User denied location access. Exiting.")
             exit(1)
-        case .Restricted:
+        case .restricted:
             print("Location access restricted. Exiting.")
             exit(1)
+        default:
+            break
         }
     }
     
-    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [AnyObject]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         exitAtTimeout = false
-        let location = locations.first as! CLLocation
+        let location = locations.first!
         
         if format.range(of: "%address") != nil {
             self.locationManager.stopUpdatingLocation()
             self.geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
                 if let postalAddress = placemarks?.first?.postalAddress {
                     let formattedAddress = CNPostalAddressFormatter.string(from: postalAddress, style: CNPostalAddressFormatterStyle.mailingAddress)
-                    self.printFormattedLocation(location: location, address: formattedAddress)
+                    self.printFormattedLocation(location, address: formattedAddress)
                 }
                 else {
-                    self.printFormattedLocation(location: location, address: "?")
+                    self.printFormattedLocation(location, address: "?")
                 }
                 self.locationManager.startUpdatingLocation()
             })
         } else {
-            printFormattedLocation(location: location)
+            printFormattedLocation(location)
         }
     }
     
