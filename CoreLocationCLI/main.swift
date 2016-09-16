@@ -17,6 +17,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
     var once = false
     var verbose = false
     var format = "%latitude %longitude"
+    var exitAtTimeout = true
     
     func start() {
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -30,7 +31,15 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             print("headingAvailable: \(CLLocationManager.headingAvailable())")
             print("regionMonitoringAvailable for CLRegion: \(CLLocationManager.isMonitoringAvailable(for: CLRegion.self))")
         }
+        let _ = NSTimer.scheduledTimerWithTimeInterval(10.0, target: self, selector: #selector(self.timeout), userInfo: nil, repeats: false)
         self.locationManager.startUpdatingLocation()
+    }
+
+    @objc func timeout() {
+        if exitAtTimeout {
+            print("Fetching location timed out. Exiting.")
+            exit(1)
+        }
     }
     
     func printFormattedLocation(location: CLLocation, address: String? = nil) {
@@ -46,15 +55,31 @@ class Delegate: NSObject, CLLocationManagerDelegate {
         if let address = address {
             output = output.replacingOccurrences(of: "%address", with: address)
         }
-        print(output)
+        print("Location: \(output)")
         if self.once {
             exit(0)
         }
         
     }
+
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        switch status {
+        case .Authorized:
+            print("Location access authorized.")
+        case .NotDetermined:
+            print("Undetermined location access.")
+        case .Denied:
+            print("User denied location access. Exiting.")
+            exit(1)
+        case .Restricted:
+            print("Location access restricted. Exiting.")
+            exit(1)
+        }
+    }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let location = locations.first!
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [AnyObject]) {
+        exitAtTimeout = false
+        let location = locations.first as! CLLocation
         
         if format.range(of: "%address") != nil {
             self.locationManager.stopUpdatingLocation()
