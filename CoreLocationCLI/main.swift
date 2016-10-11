@@ -11,9 +11,8 @@ import CoreLocation
 import Contacts
 
 class Delegate: NSObject, CLLocationManagerDelegate {
-    let locationManager = CLLocationManager()
     let geoCoder = CLGeocoder()
-    
+    let locationManager = CLLocationManager()
     var once = false
     var verbose = false
     var format = "%latitude %longitude"
@@ -44,8 +43,8 @@ class Delegate: NSObject, CLLocationManagerDelegate {
     
     func printFormattedLocation(_ location: CLLocation, address: String? = nil) {
         var output = self.format
-        output = output.replacingOccurrences(of: "%latitude", with: String(format: "%+.6f", location.coordinate.latitude))
-        output = output.replacingOccurrences(of: "%longitude", with: String(format: "%+.6f", location.coordinate.longitude))
+        output = output.replacingOccurrences(of: "%latitude", with: String(format: "%0.6f", location.coordinate.latitude))
+        output = output.replacingOccurrences(of: "%longitude", with: String(format: "%0.6f", location.coordinate.longitude))
         output = output.replacingOccurrences(of: "%altitude", with: "\(location.altitude)")
         output = output.replacingOccurrences(of: "%direction", with: "\(location.course)")
         output = output.replacingOccurrences(of: "%speed", with: "\(Int(location.speed))")
@@ -55,7 +54,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
         if let address = address {
             output = output.replacingOccurrences(of: "%address", with: address)
         }
-        print("Location: \(output)")
+        print(output)
         if self.once {
             exit(0)
         }
@@ -63,6 +62,9 @@ class Delegate: NSObject, CLLocationManagerDelegate {
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        guard verbose else {
+            return
+        }
         switch status {
         case .authorizedAlways:
             print("Location access authorized.")
@@ -104,39 +106,40 @@ class Delegate: NSObject, CLLocationManagerDelegate {
         print("LOCATION MANAGER ERROR: \(error.localizedDescription)")
         exit(1)
     }
-}
 
-
-func help() {
-    print("USAGE: CoreLocationCLI [options]")
-    print("       Displays current location using CoreLocation services.")
-    print("       By default, this will continue printing locations until you kill it with Ctrl-C.")
-    print("")
-    print("OPTIONS:")
-    print("  -h               Display this help message and exit")
-    print("")
-    print("  -once YES        Print one location and exit")
-    print("  -verbose YES     Verbose mode")
-    print("  -format 'format' Print a formatted string with the following specifiers")
-    print("     %%latitude")
-    print("     %%longitude")
-    print("     %%altitude    (meters)")
-    print("     %%direction   (degrees from true north)")
-    print("     %%speed       (meters per second)")
-    print("     %%h_accuracy  (meters)")
-    print("     %%v_accuracy  (meters)")
-    print("     %%time")
-    print("     %%address     (revsere geocode location)")
-    print("")
-    print("  the format defaults to '%%latitude/%%longitude (%%address)")
-    print("")
+    func help() {
+        print("USAGE: CoreLocationCLI [options]")
+        print("       Displays current location using CoreLocation services.")
+        print("       By default, this will continue printing locations until you kill it with Ctrl-C.")
+        print("")
+        print("OPTIONS:")
+        print("  -h               Display this help message and exit")
+        print("")
+        print("  -once YES        Print one location and exit")
+        print("  -verbose YES     Verbose mode")
+        print("  -format 'format' Print a formatted string with the following specifiers")
+        print("     %%latitude    Latitude (degrees north; or negative for south")
+        print("     %%longitude   Longitude (degrees west; or negative for east")
+        print("     %%altitude    Altitude (meters)")
+        print("     %%direction   Degrees from true north")
+        print("     %%speed       Meters per second")
+        print("     %%h_accuracy  Horizontal accuracy (meters)")
+        print("     %%v_accuracy  Vertical accuracy (meters)")
+        print("     %%time        Time")
+        print("     %%address     Reverse geocoded location to an address")
+        print("  -json            Use the format {\"latitude\":%latitude, \"longitude\":%longitude}")
+        print("                   Also implies -once")
+        print("")
+        print("  Default format if unspecified is: %%latitude %%longitude")
+        print("")
+    }
 }
 
 let delegate = Delegate()
 for (i, argument) in ProcessInfo().arguments.enumerated() {
     switch argument {
     case "-h":
-        help()
+        delegate.help()
         exit(0)
     case "-once":
         delegate.once = true
@@ -146,6 +149,9 @@ for (i, argument) in ProcessInfo().arguments.enumerated() {
         if ProcessInfo().arguments.count > i+1 {
             delegate.format = ProcessInfo().arguments[i+1]
         }
+    case "-json":
+        delegate.once = true
+        delegate.format = "{\"latitude\":%latitude, \"longitude\":%longitude}"
     default:
         break
     }
