@@ -45,7 +45,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
         var output = self.format
         output = output.replacingOccurrences(of: "%latitude", with: String(format: "%0.6f", location.coordinate.latitude))
         output = output.replacingOccurrences(of: "%longitude", with: String(format: "%0.6f", location.coordinate.longitude))
-        output = output.replacingOccurrences(of: "%altitude", with: "\(location.altitude)")
+        output = output.replacingOccurrences(of: "%altitude", with: String(format: "%0.2f", location.altitude))
         output = output.replacingOccurrences(of: "%direction", with: "\(location.course)")
         output = output.replacingOccurrences(of: "%speed", with: "\(Int(location.speed))")
         output = output.replacingOccurrences(of: "%h_accuracy", with: "\(Int(location.horizontalAccuracy))")
@@ -127,7 +127,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
         print("     %%v_accuracy  Vertical accuracy (meters)")
         print("     %%time        Time")
         print("     %%address     Reverse geocoded location to an address")
-        print("  -json            Use the format {\"latitude\":%latitude, \"longitude\":%longitude}")
+        print("  -json            Prints a JSON object with all information available")
         print("                   Also implies -once")
         print("")
         print("  Default format if unspecified is: %%latitude %%longitude")
@@ -151,7 +151,17 @@ for (i, argument) in ProcessInfo().arguments.enumerated() {
         }
     case "-json":
         delegate.once = true
-        delegate.format = "{\"latitude\":%latitude, \"longitude\":%longitude}"
+        delegate.format = "{"
+        delegate.format.append("\n  \"latitude\": %latitude")
+        delegate.format.append("\n  \"longitude\": %longitude")
+        delegate.format.append("\n  \"altitude\": %altitude")
+        delegate.format.append("\n  \"direction\": %direction")
+        delegate.format.append("\n  \"speed\": %speed")
+        delegate.format.append("\n  \"h_accuracy\": %h_accuracy")
+        delegate.format.append("\n  \"v_accuracy\": %v_accuracy")
+        delegate.format.append("\n  \"time\": \"%time\"")
+        delegate.format.append("\n  \"address\": \"%address\"")
+        delegate.format.append("\n}")
     default:
         break
     }
