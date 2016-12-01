@@ -45,14 +45,14 @@ OPTIONS:
 
 ./CoreLocationCLI -once yes -format "%latitude %longitude\n%address"
 
-  50.943829 6.941043
-  Kaiser-Wilhelm-Ring 21
-	Cologne North Rhine-Westphalia 50672
-	Germany
+    50.943829 6.941043
+    Kaiser-Wilhelm-Ring 21
+    	Cologne North Rhine-Westphalia 50672
+    	Germany
 
 ./CoreLocationCLI -json
 
-  {"latitude":40.124159, "longitude":-75.036274}
+    {"latitude":40.124159, "longitude":-75.036274}
 
 # Building
 
