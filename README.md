@@ -1,69 +1,82 @@
+# CoreLocationCLI
+
+CoreLocationCLI gets the physical location of your device and prints it to standard output. If you move it will also print out your updated location. *Kill it with CTRL-C.*
+
+![Usage](https://cloud.githubusercontent.com/assets/382183/25063655/52c11234-221d-11e7-81fb-0f8712dac393.gif)
+
+Note for Mac users: make sure WiFi is turned on. Otherwise you will see `kCLErrorDomain error 0`.
+
 # Usage
 
-`./CoreLocationCLI [-once]`
-
-If running from a Mac, make sure your WiFi is turned on. Otherwise you will see `kCLErrorDomain error 0`.
-
-# Overview
-
-Prints location information from CoreLocation. If the `-once YES` option
-is used, will exit after first location update. Otherwise, will
-continuously print output. After you download, be sure to chmod 755
-and run from Terminal.
-
-```
-USAGE: CoreLocationCLI [options]
-       Displays current location using CoreLocation services.
-       By default, this will continue printing locations until you kill it with Ctrl-C.
-
-OPTIONS:
-  -h               Display this help message and exit
-
-  -once YES        Print one location and exit
-  -verbose YES     Verbose mode
-  -format 'format' Print a formatted string with the following specifiers
-     %%latitude    Latitude (degrees north; or negative for south
-     %%longitude   Longitude (degrees west; or negative for east
-     %%altitude    Altitude (meters)
-     %%direction   Degrees from true north
-     %%speed       Meters per second
-     %%h_accuracy  Horizontal accuracy (meters)
-     %%v_accuracy  Vertical accuracy (meters)
-     %%time        Time
-     %%address     Reverse geocoded location to an address
-  -json            Use the format {\"latitude\":%latitude, \"longitude\":%longitude}
-                   Also implies -once
-
-  Default format if unspecified is: %%latitude %%longitude
+```sh
+CoreLocationCLI -h
+CoreLocationCLI [-once] -json
+CoreLocationCLI [-once] [-verbose] [-format FORMAT]
 ```
 
-# Output example
+| Switch           | Description                                            |
+| ---------------- | ------------------------------------------------------ |
+| `-h`             | Display this help message and exit                     |
+| `-once`          | Print one location and exit                            |
+| `-verbose`       | Verbose mode                                           |
+| `-json`          | JSON output mode                                       |
+| `-format FORMAT` | Print a formatted string with the following specifiers |
 
+| Format         | Description                                    |
+| -------------- | ---------------------------------------------- |
+| `%%latitude`   | Latitude (degrees north; or negative for south |
+| `%%longitude`  | Longitude (degrees west; or negative for east  |
+| `%%altitude`   | Altitude (meters)                              |
+| `%%direction`  | Degrees from true north                        |
+| `%%speed`      | Meters per second                              |
+| `%%h_accuracy` | Horizontal accuracy (meters)                   |
+| `%%v_accuracy` | Vertical accuracy (meters)                     |
+| `%%time`       | Time                                           |
+| `%%address`    | Reverse geocoded location to an address        |
+
+The default format if unspecified is: `%%latitude %%longitude`.
+
+# Output examples
+
+```sh
 ./CoreLocationCLI
+```
 
-	50.943829 6.941043
+> 50.943829 6.941043
 
+```sh
 ./CoreLocationCLI -once yes -format "%latitude %longitude\n%address"
+```
 
     50.943829 6.941043
     Kaiser-Wilhelm-Ring 21
     	Cologne North Rhine-Westphalia 50672
     	Germany
 
+```sh
 ./CoreLocationCLI -json
+```
 
-    {"latitude":40.124159, "longitude":-75.036274}
+```json
+{"latitude":40.124159, "longitude":-75.036274}
+```
 
-# Building
+# Installation
 
-To build this from the command line, run the compiler:
+Install the latest release using Homebrew with:
 
-    xcodebuild
+```sh
+brew cask install corelocationcli
+```
 
-And then your executable can be run from this location:
+Or build from the command line using the Xcode compiler:
 
-    build/Release/CoreLocationCLI
+```sh
+xcodebuild
+```
 
-# Contact
+Then run your executable from this location:
 
-Contact corelocationcli@phor.net
+```sh
+build/Release/CoreLocationCLI
+```
