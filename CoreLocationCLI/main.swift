@@ -13,7 +13,7 @@ import Contacts
 class Delegate: NSObject, CLLocationManagerDelegate {
     let geoCoder = CLGeocoder()
     let locationManager = CLLocationManager()
-    var once = false
+    var follow = false
     var verbose = false
     var format = "%latitude %longitude"
     var exitAtTimeout = true
@@ -55,10 +55,9 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             output = output.replacingOccurrences(of: "%address", with: address)
         }
         print(output)
-        if self.once {
+        if !self.follow {
             exit(0)
         }
-        
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
@@ -115,7 +114,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
         print("OPTIONS:")
         print("  -h               Display this help message and exit")
         print("")
-        print("  -once YES        Print one location and exit")
+        print("  -follow YES      Continually print location")
         print("  -verbose YES     Verbose mode")
         print("  -format 'format' Print a formatted string with the following specifiers")
         print("     %%latitude    Latitude (degrees north; or negative for south")
@@ -128,7 +127,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
         print("     %%time        Time")
         print("     %%address     Reverse geocoded location to an address")
         print("  -json            Prints a JSON object with all information available")
-        print("                   Also implies -once")
+        print("                   Also disables -follow")
         print("")
         print("  Default format if unspecified is: %%latitude %%longitude")
         print("")
@@ -141,8 +140,8 @@ for (i, argument) in ProcessInfo().arguments.enumerated() {
     case "-h":
         delegate.help()
         exit(0)
-    case "-once":
-        delegate.once = true
+    case "-follow":
+        delegate.follow = true
     case "-verbose":
         delegate.verbose = true
     case "-format":
@@ -150,7 +149,7 @@ for (i, argument) in ProcessInfo().arguments.enumerated() {
             delegate.format = ProcessInfo().arguments[i+1]
         }
     case "-json":
-        delegate.once = true
+        delegate.follow = false
         delegate.format = "{"
         delegate.format.append("\n  \"latitude\": %latitude")
         delegate.format.append("\n  \"longitude\": %longitude")
