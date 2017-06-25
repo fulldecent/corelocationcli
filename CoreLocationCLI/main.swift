@@ -151,14 +151,14 @@ for (i, argument) in ProcessInfo().arguments.enumerated() {
     case "-json":
         delegate.follow = false
         delegate.format = "{"
-        delegate.format.append("\n  \"latitude\": %latitude")
-        delegate.format.append("\n  \"longitude\": %longitude")
-        delegate.format.append("\n  \"altitude\": %altitude")
-        delegate.format.append("\n  \"direction\": %direction")
-        delegate.format.append("\n  \"speed\": %speed")
-        delegate.format.append("\n  \"h_accuracy\": %h_accuracy")
-        delegate.format.append("\n  \"v_accuracy\": %v_accuracy")
-        delegate.format.append("\n  \"time\": \"%time\"")
+        delegate.format.append("\n  \"latitude\": %latitude,")
+        delegate.format.append("\n  \"longitude\": %longitude,")
+        delegate.format.append("\n  \"altitude\": %altitude,")
+        delegate.format.append("\n  \"direction\": %direction,")
+        delegate.format.append("\n  \"speed\": %speed,")
+        delegate.format.append("\n  \"h_accuracy\": %h_accuracy,")
+        delegate.format.append("\n  \"v_accuracy\": %v_accuracy,")
+        delegate.format.append("\n  \"time\": \"%time\",")
         delegate.format.append("\n  \"address\": \"%address\"")
         delegate.format.append("\n}")
     default:

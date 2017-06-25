@@ -63,14 +63,14 @@ The default format is: `%%latitude %%longitude`.
 
 >```json
 >{
->  "latitude": 40.141196
->  "longitude": -75.034815
->  "altitude": 92.00
->  "direction": -1.0
->  "speed": -1
->  "h_accuracy": 65
->  "v_accuracy": 10
->  "time": "2017-06-25 05:29:38 +0000"
+>  "latitude": 40.141196,
+>  "longitude": -75.034815,
+>  "altitude": 92.00,
+>  "direction": -1.0,
+>  "speed": -1,
+>  "h_accuracy": 65,
+>  "v_accuracy": 10,
+>  "time": "2017-06-25 05:36:35 +0000",
 >  "address": "407 Keats Rd
 >Lower Moreland PA 19006
 >United States"
