@@ -24,8 +24,8 @@ CoreLocationCLI [-follow] [-verbose] [-format FORMAT]
 
 | Format         | Description                              |
 | -------------- | ---------------------------------------- |
-| `%%latitude`   | Latitude (degrees north; or negative for south |
-| `%%longitude`  | Longitude (degrees west; or negative for east |
+| `%%latitude`   | Latitude (degrees north; or negative for south) |
+| `%%longitude`  | Longitude (degrees west; or negative for east) |
 | `%%altitude`   | Altitude (meters)                        |
 | `%%direction`  | Degrees from true north                  |
 | `%%speed`      | Meters per second                        |
