@@ -86,7 +86,7 @@
 				TargetAttributes = {
 					D97136FB1C38867000BA5442 = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = 8Q693ZG5RN;
+						DevelopmentTeam = 56382VU69H;
 						LastSwiftMigration = 0900;
 					};
 				};
@@ -96,6 +96,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = D97136F31C38866F00BA5442;
@@ -221,7 +222,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Mac Developer";
-				DEVELOPMENT_TEAM = 8Q693ZG5RN;
+				DEVELOPMENT_TEAM = 56382VU69H;
 				PRODUCT_NAME = CoreLocationCLI;
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;
@@ -232,7 +233,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Mac Developer";
-				DEVELOPMENT_TEAM = 8Q693ZG5RN;
+				DEVELOPMENT_TEAM = 56382VU69H;
 				PRODUCT_NAME = CoreLocationCLI;
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
 				SWIFT_VERSION = 4.0;

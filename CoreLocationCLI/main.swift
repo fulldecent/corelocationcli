@@ -44,14 +44,6 @@ class Delegate: NSObject, CLLocationManagerDelegate {
     
     func printFormattedLocation(_ location: CLLocation) {
         var output = self.format
-        output = output.replacingOccurrences(of: "%latitude", with: String(format: "%0.6f", location.coordinate.latitude))
-        output = output.replacingOccurrences(of: "%longitude", with: String(format: "%0.6f", location.coordinate.longitude))
-        output = output.replacingOccurrences(of: "%altitude", with: String(format: "%0.2f", location.altitude))
-        output = output.replacingOccurrences(of: "%direction", with: "\(location.course)")
-        output = output.replacingOccurrences(of: "%speed", with: "\(Int(location.speed))")
-        output = output.replacingOccurrences(of: "%h_accuracy", with: "\(Int(location.horizontalAccuracy))")
-        output = output.replacingOccurrences(of: "%v_accuracy", with: "\(Int(location.verticalAccuracy))")
-        output = output.replacingOccurrences(of: "%time", with: location.timestamp.description)
         if placemark != nil {
             if let postalAddress = placemark?.postalAddress {
                 let formattedAddress = CNPostalAddressFormatter.string(from: postalAddress, style: CNPostalAddressFormatterStyle.mailingAddress)
@@ -70,6 +62,15 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             output = output.replacingOccurrences(of: "%region", with: String(placemark?.region?.identifier ?? ""))
             output = output.replacingOccurrences(of: "%timeZone", with: String(placemark?.timeZone?.identifier ?? ""))
         }
+        output = output.replacingOccurrences(of: "%latitude", with: String(format: "%0.6f", location.coordinate.latitude))
+        output = output.replacingOccurrences(of: "%longitude", with: String(format: "%0.6f", location.coordinate.longitude))
+        output = output.replacingOccurrences(of: "%altitude", with: String(format: "%0.2f", location.altitude))
+        output = output.replacingOccurrences(of: "%direction", with: "\(location.course)")
+        output = output.replacingOccurrences(of: "%speed", with: "\(Int(location.speed))")
+        output = output.replacingOccurrences(of: "%h_accuracy", with: "\(Int(location.horizontalAccuracy))")
+        output = output.replacingOccurrences(of: "%v_accuracy", with: "\(Int(location.verticalAccuracy))")
+        output = output.replacingOccurrences(of: "%time", with: location.timestamp.description)
+
         print(output)
         if !self.follow {
             exit(0)
