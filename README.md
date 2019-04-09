@@ -24,17 +24,29 @@ CoreLocationCLI [-follow] [-verbose] [-format FORMAT]
 
 | Format         | Description                              |
 | -------------- | ---------------------------------------- |
-| `%%latitude`   | Latitude (degrees north; or negative for south) |
-| `%%longitude`  | Longitude (degrees west; or negative for east) |
-| `%%altitude`   | Altitude (meters)                        |
-| `%%direction`  | Degrees from true north                  |
-| `%%speed`      | Meters per second                        |
-| `%%h_accuracy` | Horizontal accuracy (meters)             |
-| `%%v_accuracy` | Vertical accuracy (meters)               |
-| `%%time`       | Time                                     |
-| `%%address`    | Reverse geocoded location to an address  |
+| `%latitude`   | Latitude (degrees north; or negative for south) |
+| `%longitude`  | Longitude (degrees west; or negative for east) |
+| `%altitude`   | Altitude (meters)                        |
+| `%direction`  | Degrees from true north                  |
+| `%speed`      | Meters per second                        |
+| `%h_accuracy` | Horizontal accuracy (meters)             |
+| `%v_accuracy` | Vertical accuracy (meters)               |
+| `%time`       | Time                                     |
+| `%address`    | Reverse geocoded location to an address  |
+| `%name`       | Reverse geocoded place name
+| `%isoCountryCode` | Reverse geocoded ISO country code
+| `%country` | Reverse geocoded country name
+| `%postalCode` | Reverse geocoded postal code
+| `%administrativeArea` | Reverse geocoded state or province
+| `%subAdministrativeArea` | additional administrative area information
+| `%locality` | Reverse geocoded city name
+| `%subLocality` | additional city-level information
+| `%thoroughfare` | Reverse geocoded street address
+| `%subThoroughfare` | additional street-level information
+| `%region` | Reverse geocoded geographic region
+| `%timeZone` | Reverse geocoded time zone
 
-The default format is: `%%latitude %%longitude`.
+The default format is: `%latitude %longitude`.
 
 # Output examples
 
