@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "SwiftPM",
+        "repositoryURL": "https://github.com/apple/swift-package-manager",
+        "state": {
+          "branch": "4d0bab2",
+          "revision": "4d0bab2add46e3704343268227451534c224111c",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
