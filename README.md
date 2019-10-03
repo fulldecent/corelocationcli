@@ -85,10 +85,12 @@ Install the latest release using Homebrew with:
 brew cask install corelocationcli
 ```
 
-Or build from the command line using the Xcode compiler:
+Or build from the command line using the Xcode compiler with one of these commands:
 
 ```sh
-xcodebuild
+xcodebuild # requires Apple Developer account
+# ... or ...
+swift build --disable-sandbox -c release --static-swift-stdlib # does not require account
 ```
 
 Then run your executable from this location:
