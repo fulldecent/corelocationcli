@@ -78,19 +78,24 @@ class Delegate: NSObject, CLLocationManagerDelegate {
     }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        guard verbose else {
-            return
-        }
         switch status {
         case .authorizedAlways:
-            print("Location access authorized.")
+            if self.verbose {
+                print("Location access authorized.")
+            }
         case .notDetermined:
-            print("Undetermined location access.")
+            if self.verbose {
+                print("Undetermined location access.")
+            }
         case .denied:
-            print("User denied location access. Exiting.")
+            if self.verbose {
+                print("User denied location access. Exiting.")
+            }
             exit(1)
         case .restricted:
-            print("Location access restricted. Exiting.")
+            if self.verbose {
+                print("Location access restricted. Exiting.")
+            }
             exit(1)
         default:
             break
