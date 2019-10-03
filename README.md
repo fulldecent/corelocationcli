@@ -4,7 +4,7 @@ CoreLocationCLI gets the physical location of your device and prints it to stand
 
 ![Usage](https://cloud.githubusercontent.com/assets/382183/25063655/52c11234-221d-11e7-81fb-0f8712dac393.gif)
 
-Note for Mac users: make sure WiFi is turned on. Otherwise you will see `kCLErrorDomain error 0`.
+Note for Mac users: make sure Wi-Fi is turned on. Otherwise you will see `kCLErrorDomain error 0`.
 
 # Usage
 
