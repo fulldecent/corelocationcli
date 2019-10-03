@@ -10,17 +10,17 @@ Note for Mac users: make sure Wi-Fi is turned on. Otherwise you will see `kCLErr
 
 ```sh
 CoreLocationCLI -h
-CoreLocationCLI -json
 CoreLocationCLI [-follow] [-verbose] [-format FORMAT]
+CoreLocationCLI [-follow] [-verbose] -json
 ```
 
-| Switch           | Description                              |
-| ---------------- | ---------------------------------------- |
-| `-h`             | Display this help message and exit       |
-| `-follow`        | Continually print location               |
-| `-verbose`       | Verbose mode                             |
-| `-json`          | JSON output mode                         |
+| Switch           | Description                                            |
+| ---------------- | ------------------------------------------------------ |
+| `-h`             | Display this help message and exit                     |
+| `-follow`        | Continually print location                             |
+| `-verbose`       | Show debugging output                                  |
 | `-format FORMAT` | Print a formatted string with the following specifiers |
+| `-json`          | JSON output mode                                       |
 
 | Format         | Description                              |
 | -------------- | ---------------------------------------- |
@@ -33,18 +33,18 @@ CoreLocationCLI [-follow] [-verbose] [-format FORMAT]
 | `%v_accuracy` | Vertical accuracy (meters)               |
 | `%time`       | Time                                     |
 | `%address`    | Reverse geocoded location to an address  |
-| `%name`       | Reverse geocoded place name
-| `%isoCountryCode` | Reverse geocoded ISO country code
-| `%country` | Reverse geocoded country name
-| `%postalCode` | Reverse geocoded postal code
-| `%administrativeArea` | Reverse geocoded state or province
-| `%subAdministrativeArea` | additional administrative area information
-| `%locality` | Reverse geocoded city name
-| `%subLocality` | additional city-level information
-| `%thoroughfare` | Reverse geocoded street address
-| `%subThoroughfare` | additional street-level information
-| `%region` | Reverse geocoded geographic region
-| `%timeZone` | Reverse geocoded time zone
+| `%name`       | Reverse geocoded place name |
+| `%isoCountryCode` | Reverse geocoded ISO country code |
+| `%country` | Reverse geocoded country name |
+| `%postalCode` | Reverse geocoded postal code |
+| `%administrativeArea` | Reverse geocoded state or province |
+| `%subAdministrativeArea` | additional administrative area information |
+| `%locality` | Reverse geocoded city name |
+| `%subLocality` | additional city-level information |
+| `%thoroughfare` | Reverse geocoded street address |
+| `%subThoroughfare` | additional street-level information |
+| `%region` | Reverse geocoded geographic region |
+| `%timeZone` | Reverse geocoded time zone |
 
 The default format is: `%latitude %longitude`.
 
@@ -74,20 +74,8 @@ The default format is: `%latitude %longitude`.
 ```
 
 >```json
->{
->  "latitude": 40.141196,
->  "longitude": -75.034815,
->  "altitude": 92.00,
->  "direction": -1.0,
->  "speed": -1,
->  "h_accuracy": 65,
->  "v_accuracy": 10,
->  "time": "2017-06-25 05:36:35 +0000",
->  "address": "407 Keats Rd
->Lower Moreland PA 19006
->United States"
->}
->```
+>{"address":"407 Keats Rd\nLower Moreland PA 19006\nUnited States","locality":"nLower Moreland","subThoroughfare":"407","time":"2019-10-03 04:10:05 +0000","subLocality":null,"administrativeArea":"PA","country":"United States","thoroughfare":"Keats Rd","region":"<+40.141196,-75.034815> radius 35.91","speed":"-1","latitude":"40.141196","name":"1354 Panther Rd","altitude":"92.00","timeZone":"America\/New_York","isoCountryCode":"US","longitude":"-75.034815","v_accuracy":"65","postalCode":"19006","direction":"-1.0","h_accuracy":"65","subAdministrativeArea":"Montgomery"}
+>  ```
 
 # Installation
 

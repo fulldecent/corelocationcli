@@ -10,20 +10,25 @@ import Foundation
 import CoreLocation
 import Contacts
 
+enum OutputFormat {
+    case json
+    case string(String)
+}
+
 class Delegate: NSObject, CLLocationManagerDelegate {
-    let geoCoder = CLGeocoder()
     let locationManager = CLLocationManager()
+    let geoCoder = CLGeocoder()
     var follow = false
     var verbose = false
-    var format = "%latitude %longitude"
-    var exitAtTimeout = true
-    var placemark: CLPlacemark?
+    var format = OutputFormat.string("%latitude %longitude")
+    var timeoutTimer: Timer? = nil
+    var requiresPlacemarkLookup = false
     
     func start() {
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        self.locationManager.distanceFilter = 2.0
-        self.locationManager.delegate = self
-        if self.verbose {
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.distanceFilter = 2.0
+        locationManager.delegate = self
+        if verbose {
             print("authorizationStatus: \(CLLocationManager.authorizationStatus())")
             print("locationServicesEnabled: \(CLLocationManager.locationServicesEnabled())")
             print("deferredLocationUpdatesAvailable: \(CLLocationManager.deferredLocationUpdatesAvailable())")
@@ -31,24 +36,62 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             print("headingAvailable: \(CLLocationManager.headingAvailable())")
             print("regionMonitoringAvailable for CLRegion: \(CLLocationManager.isMonitoringAvailable(for: CLRegion.self))")
         }
-        let _ = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(self.timeout), userInfo: nil, repeats: false)
+        timeoutTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false, block: {_ in self.timeout()})
         self.locationManager.startUpdatingLocation()
     }
 
-    @objc func timeout() {
-        if exitAtTimeout {
-            print("Fetching location timed out. Exiting.")
-            exit(1)
-        }
+    func timeout() {
+        print("Fetching location timed out. Exiting.")
+        exit(1)
     }
     
-    func printFormattedLocation(_ location: CLLocation) {
-        var output = self.format
-        if placemark != nil {
-            if let postalAddress = placemark?.postalAddress {
-                let formattedAddress = CNPostalAddressFormatter.string(from: postalAddress, style: CNPostalAddressFormatterStyle.mailingAddress)
-                output = output.replacingOccurrences(of: "%address", with: formattedAddress)
-            }
+    func printFormattedLocation(location: CLLocation, placemark: CLPlacemark? = nil) {
+        let formattedPostalAddress = placemark?.postalAddress == nil
+            ? ""
+            : CNPostalAddressFormatter.string(from: placemark!.postalAddress!, style: CNPostalAddressFormatterStyle.mailingAddress)
+
+        switch format {
+        case .json:
+            let outputObject: [String: String?] = [
+                "latitude": String(format: "%0.6f", location.coordinate.latitude),
+                "longitude": String(format: "%0.6f", location.coordinate.longitude),
+                "altitude": String(format: "%0.2f", location.altitude),
+                "direction": "\(location.course)",
+                "speed": "\(Int(location.speed))",
+                "h_accuracy": "\(Int(location.horizontalAccuracy))",
+                "v_accuracy": "\(Int(location.verticalAccuracy))",
+                "time": location.timestamp.description,
+
+                // Placemark
+                "name": placemark?.name,
+                "isoCountryCode": placemark?.isoCountryCode,
+                "country": placemark?.country,
+                "postalCode": placemark?.postalCode,
+                "administrativeArea": placemark?.administrativeArea,
+                "subAdministrativeArea": placemark?.subAdministrativeArea,
+                "locality": placemark?.locality,
+                "subLocality": placemark?.subLocality,
+                "thoroughfare": placemark?.thoroughfare,
+                "subThoroughfare": placemark?.subThoroughfare,
+                "region": placemark?.region?.identifier,
+                "timeZone": placemark?.timeZone?.identifier,
+
+                // Address
+                "address": formattedPostalAddress
+            ]
+            let encoder = JSONEncoder()
+            print(String(data: try! encoder.encode(outputObject), encoding: .utf8)!)
+        case .string(var output):
+            output = output.replacingOccurrences(of: "%latitude", with: String(format: "%0.6f", location.coordinate.latitude))
+            output = output.replacingOccurrences(of: "%longitude", with: String(format: "%0.6f", location.coordinate.longitude))
+            output = output.replacingOccurrences(of: "%altitude", with: String(format: "%0.2f", location.altitude))
+            output = output.replacingOccurrences(of: "%direction", with: "\(location.course)")
+            output = output.replacingOccurrences(of: "%speed", with: "\(Int(location.speed))")
+            output = output.replacingOccurrences(of: "%h_accuracy", with: "\(Int(location.horizontalAccuracy))")
+            output = output.replacingOccurrences(of: "%v_accuracy", with: "\(Int(location.verticalAccuracy))")
+            output = output.replacingOccurrences(of: "%time", with: location.timestamp.description)
+
+            // Placemark
             output = output.replacingOccurrences(of: "%name", with: String(placemark?.name ?? ""))
             output = output.replacingOccurrences(of: "%isoCountryCode", with: String(placemark?.isoCountryCode ?? ""))
             output = output.replacingOccurrences(of: "%country", with: String(placemark?.country ?? ""))
@@ -61,19 +104,10 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             output = output.replacingOccurrences(of: "%subThoroughfare", with: String(placemark?.subThoroughfare ?? ""))
             output = output.replacingOccurrences(of: "%region", with: String(placemark?.region?.identifier ?? ""))
             output = output.replacingOccurrences(of: "%timeZone", with: String(placemark?.timeZone?.identifier ?? ""))
-        }
-        output = output.replacingOccurrences(of: "%latitude", with: String(format: "%0.6f", location.coordinate.latitude))
-        output = output.replacingOccurrences(of: "%longitude", with: String(format: "%0.6f", location.coordinate.longitude))
-        output = output.replacingOccurrences(of: "%altitude", with: String(format: "%0.2f", location.altitude))
-        output = output.replacingOccurrences(of: "%direction", with: "\(location.course)")
-        output = output.replacingOccurrences(of: "%speed", with: "\(Int(location.speed))")
-        output = output.replacingOccurrences(of: "%h_accuracy", with: "\(Int(location.horizontalAccuracy))")
-        output = output.replacingOccurrences(of: "%v_accuracy", with: "\(Int(location.verticalAccuracy))")
-        output = output.replacingOccurrences(of: "%time", with: location.timestamp.description)
 
-        print(output)
-        if !self.follow {
-            exit(0)
+            // Address
+            output = output.replacingOccurrences(of: "%address", with: formattedPostalAddress)
+            print(output)
         }
     }
 
@@ -103,21 +137,27 @@ class Delegate: NSObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        exitAtTimeout = false
+        timeoutTimer!.invalidate()
         let location = locations.first!
-        let formatStrings = ["%address", "%name", "%isoCountryCode", "%country", "%postalCode", "%administrativeArea", "%subAdministrativeArea", "%locality", "%subLocality", "%thoroughfare", "%subThoroughfare", "%region", "%timeZone"]
-        if formatStrings.contains(where: format.contains) {
+        if requiresPlacemarkLookup {
             self.locationManager.stopUpdatingLocation()
             self.geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
                 if error != nil {
                     print("Reverse geocode failed: \(error?.localizedDescription ?? "unknown error")")
+                    exit(1)
                 }
-                self.placemark = placemarks?.first
+                let placemark = placemarks?.first
+                self.printFormattedLocation(location: location, placemark: placemark)
+                if !self.follow {
+                    exit(0)
+                }
                 self.locationManager.startUpdatingLocation()
-                self.printFormattedLocation(location)
             })
         } else {
-            printFormattedLocation(location)
+            printFormattedLocation(location: location)
+            if !self.follow {
+                exit(0)
+            }
         }
     }
     
@@ -127,43 +167,45 @@ class Delegate: NSObject, CLLocationManagerDelegate {
     }
 
     func help() {
-        print("USAGE: CoreLocationCLI [options]")
-        print("       Displays current location using CoreLocation services.")
-        print("       By default, this will continue printing locations until you kill it with Ctrl-C.")
-        print("")
-        print("OPTIONS:")
-        print("  -h                       Display this help message and exit")
-        print("")
-        print("  -follow YES              Continually print location")
-        print("  -verbose YES             Verbose mode")
-        print("  -format 'format'         Print a formatted string with the")
-        print("                             following specifiers")
-        print("    %latitude              Latitude (degrees north; or negative for south")
-        print("    %longitude             Longitude (degrees west; or negative for east")
-        print("    %altitude              Altitude (meters)")
-        print("    %direction             Degrees from true north")
-        print("    %speed                 Meters per second")
-        print("    %h_accuracy            Horizontal accuracy (meters)")
-        print("    %v_accuracy            Vertical accuracy (meters)")
-        print("    %time                  Time")
-        print("    %address               Reverse geocoded location to an address")
-        print("    %name                  Reverse geocoded place name")
-        print("    %isoCountryCode        Reverse geocoded ISO country code")
-        print("    %country               Reverse geocoded country name")
-        print("    %postalCode            Reverse geocoded postal code")
-        print("    %administrativeArea    Reverse geocoded state or province")
-        print("    %subAdministrativeArea Additional administrative area information")
-        print("    %locality              Reverse geocoded city name")
-        print("    %subLocality           Additional city-level information")
-        print("    %thoroughfare          Reverse geocoded street address")
-        print("    %subThoroughfare       Additional street-level information")
-        print("    %region                Reverse geocoded geographic region")
-        print("    %timeZone              Reverse geocoded time zone")
-        print("  -json                    Prints a JSON object with all information available")
-        print("                           Also disables -follow")
-        print("")
-        print("  Default format if unspecified is: %%latitude %%longitude")
-        print("")
+        print("""
+        USAGE: CoreLocationCLI -h
+               CoreLocationCLI [-follow] [-verbose] [-format FORMAT]
+               CoreLocationCLI [-follow] [-verbose] -json
+
+               Displays current location using CoreLocation services
+        
+        OPTIONS:
+          -h                       Display this help message and exit
+          -follow YES              Continually print location
+          -verbose YES             Show debugging output
+          -format FORMAT           Print a string with these substitutions
+            %latitude              Latitude (degrees north; or negative for south)
+            %longitude             Longitude (degrees west; or negative for east)
+            %altitude              Altitude (meters)
+            %direction             Degrees from true north
+            %speed                 Meters per second
+            %h_accuracy            Horizontal accuracy (meters)
+            %v_accuracy            Vertical accuracy (meters)
+            %time                  Time
+            %address               Reverse geocoded location to an address
+            %name                  Reverse geocoded place name
+            %isoCountryCode        Reverse geocoded ISO country code
+            %country               Reverse geocoded country name
+            %postalCode            Reverse geocoded postal code
+            %administrativeArea    Reverse geocoded state or province
+            %subAdministrativeArea Additional administrative area information
+            %locality              Reverse geocoded city name
+            %subLocality           Additional city-level information
+            %thoroughfare          Reverse geocoded street address
+            %subThoroughfare       Additional street-level information
+            %region                Reverse geocoded geographic region
+            %timeZone              Reverse geocoded time zone
+          -json                    Prints a JSON object with all information available
+        
+          Default format if not specified is: %latitude %longitude.
+          Using -json with -follow produces one line of JSON per location update. And is
+          compatible with the JSON Lines text format.
+        """)
     }
 }
 
@@ -179,25 +221,20 @@ for (i, argument) in ProcessInfo().arguments.enumerated() {
         delegate.verbose = true
     case "-format":
         if ProcessInfo().arguments.count > i+1 {
-            delegate.format = ProcessInfo().arguments[i+1]
+            delegate.format = .string(ProcessInfo().arguments[i+1])
+            let placemarkStrings = ["%address", "%name", "%isoCountryCode", "%country", "%postalCode", "%administrativeArea", "%subAdministrativeArea", "%locality", "%subLocality", "%thoroughfare", "%subThoroughfare", "%region", "%timeZone"]
+            if placemarkStrings.contains(where:ProcessInfo().arguments[i+1].contains) {
+                delegate.requiresPlacemarkLookup = true
+            }
         }
     case "-json":
-        delegate.follow = false
-        delegate.format = "{"
-        delegate.format.append("\n  \"latitude\": %latitude,")
-        delegate.format.append("\n  \"longitude\": %longitude,")
-        delegate.format.append("\n  \"altitude\": %altitude,")
-        delegate.format.append("\n  \"direction\": %direction,")
-        delegate.format.append("\n  \"speed\": %speed,")
-        delegate.format.append("\n  \"h_accuracy\": %h_accuracy,")
-        delegate.format.append("\n  \"v_accuracy\": %v_accuracy,")
-        delegate.format.append("\n  \"time\": \"%time\",")
-        delegate.format.append("\n  \"address\": \"%address\"")
-        delegate.format.append("\n}")
+        delegate.format = .json
+        delegate.requiresPlacemarkLookup = true
     default:
         break
     }
 }
+
 delegate.start()
 
 autoreleasepool {
