@@ -140,7 +140,6 @@ class Delegate: NSObject, CLLocationManagerDelegate {
         timeoutTimer!.invalidate()
         let location = locations.first!
         if requiresPlacemarkLookup {
-            self.locationManager.stopUpdatingLocation()
             self.geoCoder.reverseGeocodeLocation(location, completionHandler: { (placemarks, error) in
                 if error != nil {
                     print("Reverse geocode failed: \(error?.localizedDescription ?? "unknown error")")
@@ -151,7 +150,6 @@ class Delegate: NSObject, CLLocationManagerDelegate {
                 if !self.follow {
                     exit(0)
                 }
-                self.locationManager.startUpdatingLocation()
             })
         } else {
             printFormattedLocation(location: location)
