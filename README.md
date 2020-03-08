@@ -6,7 +6,7 @@ CoreLocationCLI gets the physical location of your device and prints it to stand
 
 Note for Mac users: make sure Wi-Fi is turned on. Otherwise you will see `kCLErrorDomain error 0`.
 
-# Usage
+## Usage
 
 ```sh
 CoreLocationCLI -h
@@ -48,7 +48,7 @@ CoreLocationCLI [-follow] [-verbose] -json
 
 The default format is: `%latitude %longitude`.
 
-# Output examples
+## Output examples
 
 ```sh
 ./CoreLocationCLI
@@ -77,7 +77,7 @@ The default format is: `%latitude %longitude`.
 >{"address":"407 Keats Rd\nLower Moreland PA 19006\nUnited States","locality":"nLower Moreland","subThoroughfare":"407","time":"2019-10-03 04:10:05 +0000","subLocality":null,"administrativeArea":"PA","country":"United States","thoroughfare":"Keats Rd","region":"<+40.141196,-75.034815> radius 35.91","speed":"-1","latitude":"40.141196","name":"1354 Panther Rd","altitude":"92.00","timeZone":"America\/New_York","isoCountryCode":"US","longitude":"-75.034815","v_accuracy":"65","postalCode":"19006","direction":"-1.0","h_accuracy":"65","subAdministrativeArea":"Montgomery"}
 >  ```
 
-# Installation
+## Installation
 
 Install the latest release using Homebrew with:
 
