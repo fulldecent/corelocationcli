@@ -1,8 +1,4 @@
-# Contributing
-
-All contributors are welcome. Please use issues and pull requests to contribute to the project.
-
-# Release Process
+# How To Make Releases
 
 1. Create a release commit, see [prior releases](https://github.com/fulldecent/corelocationcli/releases) for an example
    1. Update the version number (actually maybe we don't have that anywhere)
@@ -13,3 +9,4 @@ All contributors are welcome. Please use issues and pull requests to contribute 
    1. Make it some how
    3. Add to the GitHub release
 5. Update this documentation to be smoother and then delete this bullet
+
