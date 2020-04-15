@@ -25,6 +25,7 @@
 /* Begin PBXFileReference section */
 		D97136FC1C38867000BA5442 /* CoreLocationCLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CoreLocationCLI; sourceTree = BUILT_PRODUCTS_DIR; };
 		D97136FF1C38867000BA5442 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = main.swift; path = corelocationcli/main.swift; sourceTree = "<group>"; };
+		D9E50AC424469D8A00A13B91 /* CoreLocationCLI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = CoreLocationCLI.entitlements; path = CoreLocationCLI/CoreLocationCLI.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +42,7 @@
 		D97136F31C38866F00BA5442 = {
 			isa = PBXGroup;
 			children = (
+				D9E50AC424469D8A00A13B91 /* CoreLocationCLI.entitlements */,
 				D97136FF1C38867000BA5442 /* main.swift */,
 				D97136FD1C38867000BA5442 /* Products */,
 			);
@@ -168,7 +170,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -217,7 +219,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -227,6 +229,7 @@
 		D97137041C38867000BA5442 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = CoreLocationCLI/CoreLocationCLI.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				DEVELOPMENT_TEAM = 8Q693ZG5RN;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -238,6 +241,7 @@
 		D97137051C38867000BA5442 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = CoreLocationCLI/CoreLocationCLI.entitlements;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				DEVELOPMENT_TEAM = 8Q693ZG5RN;
 				ENABLE_HARDENED_RUNTIME = YES;

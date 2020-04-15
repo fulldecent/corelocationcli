@@ -4,14 +4,9 @@ import PackageDescription
 let package = Package(
     name: "location",
     platforms: [
-        .macOS(.v10_13),
-    ],
-    dependencies: [
-        .package(url: "https://github.com/apple/swift-package-manager", .revision("4d0bab2")),
+        .macOS(.v10_14),
     ],
     targets: [
-        .target(
-            name: "CoreLocationCLI",
-            dependencies: ["Utility"]),
+        .target(name: "CoreLocationCLI")
     ]
 )
