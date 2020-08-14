@@ -101,7 +101,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             output = output.replacingOccurrences(of: "%speed", with: "\(Int(location.speed))")
             output = output.replacingOccurrences(of: "%h_accuracy", with: "\(Int(location.horizontalAccuracy))")
             output = output.replacingOccurrences(of: "%v_accuracy", with: "\(Int(location.verticalAccuracy))")
-            output = output.replacingOccurrences(of: "%time", with: location.timestamp.description)
+            output = output.replacingOccurrences(of: "%time", with: locatedTime ?? location.timestamp.description)
 
             // Placemark
             output = output.replacingOccurrences(of: "%name", with: String(placemark?.name ?? ""))
