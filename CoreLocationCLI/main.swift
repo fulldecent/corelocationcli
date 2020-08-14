@@ -50,6 +50,18 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             ? ""
             : CNPostalAddressFormatter.string(from: placemark!.postalAddress!, style: CNPostalAddressFormatterStyle.mailingAddress)
 
+        // Attempt to infer timezone for timestamp string
+        var locatedTime: String?
+        if let locatedTimeZone = placemark?.timeZone {
+            let time = location.timestamp
+
+            let formatter = DateFormatter()
+            formatter.timeZone = locatedTimeZone
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+
+            locatedTime = formatter.string(from: time)
+        }
+
         switch format {
         case .json:
             let outputObject: [String: String?] = [
@@ -60,7 +72,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
                 "speed": "\(Int(location.speed))",
                 "h_accuracy": "\(Int(location.horizontalAccuracy))",
                 "v_accuracy": "\(Int(location.verticalAccuracy))",
-                "time": location.timestamp.description,
+                "time": locatedTime ?? location.timestamp.description,
 
                 // Placemark
                 "name": placemark?.name,
