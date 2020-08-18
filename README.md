@@ -45,6 +45,7 @@ CoreLocationCLI [-follow] [-verbose] -json
 | `%subThoroughfare` | additional street-level information |
 | `%region` | Reverse geocoded geographic region |
 | `%timeZone` | Reverse geocoded time zone |
+| `%time_local` | Localized time using reverse geocoded time zone |
 
 The default format is: `%latitude %longitude`.
 
@@ -74,7 +75,7 @@ The default format is: `%latitude %longitude`.
 ```
 
 >```json
->{"address":"407 Keats Rd\nLower Moreland PA 19006\nUnited States","locality":"nLower Moreland","subThoroughfare":"407","time":"2019-10-03 04:10:05 +0000","subLocality":null,"administrativeArea":"PA","country":"United States","thoroughfare":"Keats Rd","region":"<+40.141196,-75.034815> radius 35.91","speed":"-1","latitude":"40.141196","name":"1354 Panther Rd","altitude":"92.00","timeZone":"America\/New_York","isoCountryCode":"US","longitude":"-75.034815","v_accuracy":"65","postalCode":"19006","direction":"-1.0","h_accuracy":"65","subAdministrativeArea":"Montgomery"}
+>{"address":"407 Keats Rd\nLower Moreland PA 19006\nUnited States","locality":"nLower Moreland","subThoroughfare":"407","time":"2019-10-03 04:10:05 +0000","subLocality":null,"administrativeArea":"PA","country":"United States","thoroughfare":"Keats Rd","region":"<+40.141196,-75.034815> radius 35.91","speed":"-1","latitude":"40.141196","name":"1354 Panther Rd","altitude":"92.00","timeZone":"America\/New_York","time_local": "2019-10-02 23:10:05 -0400","isoCountryCode":"US","longitude":"-75.034815","v_accuracy":"65","postalCode":"19006","direction":"-1.0","h_accuracy":"65","subAdministrativeArea":"Montgomery"}
 >  ```
 
 ## Installation

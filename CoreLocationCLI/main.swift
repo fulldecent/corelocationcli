@@ -50,6 +50,18 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             ? ""
             : CNPostalAddressFormatter.string(from: placemark!.postalAddress!, style: CNPostalAddressFormatterStyle.mailingAddress)
 
+        // Attempt to infer timezone for timestamp string
+        var locatedTime: String?
+        if let locatedTimeZone = placemark?.timeZone {
+            let time = location.timestamp
+
+            let formatter = DateFormatter()
+            formatter.timeZone = locatedTimeZone
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+
+            locatedTime = formatter.string(from: time)
+        }
+
         switch format {
         case .json:
             let outputObject: [String: String?] = [
@@ -75,6 +87,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
                 "subThoroughfare": placemark?.subThoroughfare,
                 "region": placemark?.region?.identifier,
                 "timeZone": placemark?.timeZone?.identifier,
+                "time_local": locatedTime,
 
                 // Address
                 "address": formattedPostalAddress
@@ -104,6 +117,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             output = output.replacingOccurrences(of: "%subThoroughfare", with: String(placemark?.subThoroughfare ?? ""))
             output = output.replacingOccurrences(of: "%region", with: String(placemark?.region?.identifier ?? ""))
             output = output.replacingOccurrences(of: "%timeZone", with: String(placemark?.timeZone?.identifier ?? ""))
+            output = output.replacingOccurrences(of: "%time_local", with: String(locatedTime ?? ""))
 
             // Address
             output = output.replacingOccurrences(of: "%address", with: formattedPostalAddress)
@@ -198,6 +212,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             %subThoroughfare       Additional street-level information
             %region                Reverse geocoded geographic region
             %timeZone              Reverse geocoded time zone
+            %time_local            Localized time using reverse geocoded time zone
           -json                    Prints a JSON object with all information available
         
           Default format if not specified is: %latitude %longitude.
@@ -220,7 +235,7 @@ for (i, argument) in ProcessInfo().arguments.enumerated() {
     case "-format":
         if ProcessInfo().arguments.count > i+1 {
             delegate.format = .string(ProcessInfo().arguments[i+1])
-            let placemarkStrings = ["%address", "%name", "%isoCountryCode", "%country", "%postalCode", "%administrativeArea", "%subAdministrativeArea", "%locality", "%subLocality", "%thoroughfare", "%subThoroughfare", "%region", "%timeZone"]
+            let placemarkStrings = ["%address", "%name", "%isoCountryCode", "%country", "%postalCode", "%administrativeArea", "%subAdministrativeArea", "%locality", "%subLocality", "%thoroughfare", "%subThoroughfare", "%region", "%timeZone", "%time_local"]
             if placemarkStrings.contains(where:ProcessInfo().arguments[i+1].contains) {
                 delegate.requiresPlacemarkLookup = true
             }
