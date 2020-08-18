@@ -72,7 +72,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
                 "speed": "\(Int(location.speed))",
                 "h_accuracy": "\(Int(location.horizontalAccuracy))",
                 "v_accuracy": "\(Int(location.verticalAccuracy))",
-                "time": locatedTime ?? location.timestamp.description,
+                "time": location.timestamp.description,
 
                 // Placemark
                 "name": placemark?.name,
@@ -87,6 +87,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
                 "subThoroughfare": placemark?.subThoroughfare,
                 "region": placemark?.region?.identifier,
                 "timeZone": placemark?.timeZone?.identifier,
+                "time_local": locatedTime,
 
                 // Address
                 "address": formattedPostalAddress
@@ -101,7 +102,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             output = output.replacingOccurrences(of: "%speed", with: "\(Int(location.speed))")
             output = output.replacingOccurrences(of: "%h_accuracy", with: "\(Int(location.horizontalAccuracy))")
             output = output.replacingOccurrences(of: "%v_accuracy", with: "\(Int(location.verticalAccuracy))")
-            output = output.replacingOccurrences(of: "%time", with: locatedTime ?? location.timestamp.description)
+            output = output.replacingOccurrences(of: "%time", with: location.timestamp.description)
 
             // Placemark
             output = output.replacingOccurrences(of: "%name", with: String(placemark?.name ?? ""))
@@ -116,6 +117,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             output = output.replacingOccurrences(of: "%subThoroughfare", with: String(placemark?.subThoroughfare ?? ""))
             output = output.replacingOccurrences(of: "%region", with: String(placemark?.region?.identifier ?? ""))
             output = output.replacingOccurrences(of: "%timeZone", with: String(placemark?.timeZone?.identifier ?? ""))
+            output = output.replacingOccurrences(of: "%time_local", with: String(locatedTime ?? ""))
 
             // Address
             output = output.replacingOccurrences(of: "%address", with: formattedPostalAddress)
@@ -210,6 +212,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
             %subThoroughfare       Additional street-level information
             %region                Reverse geocoded geographic region
             %timeZone              Reverse geocoded time zone
+            %time_local            Localized time using reverse geocoded time zone
           -json                    Prints a JSON object with all information available
         
           Default format if not specified is: %latitude %longitude.
@@ -232,7 +235,7 @@ for (i, argument) in ProcessInfo().arguments.enumerated() {
     case "-format":
         if ProcessInfo().arguments.count > i+1 {
             delegate.format = .string(ProcessInfo().arguments[i+1])
-            let placemarkStrings = ["%address", "%name", "%isoCountryCode", "%country", "%postalCode", "%administrativeArea", "%subAdministrativeArea", "%locality", "%subLocality", "%thoroughfare", "%subThoroughfare", "%region", "%timeZone"]
+            let placemarkStrings = ["%address", "%name", "%isoCountryCode", "%country", "%postalCode", "%administrativeArea", "%subAdministrativeArea", "%locality", "%subLocality", "%thoroughfare", "%subThoroughfare", "%region", "%timeZone", "%time_local"]
             if placemarkStrings.contains(where:ProcessInfo().arguments[i+1].contains) {
                 delegate.requiresPlacemarkLookup = true
             }
