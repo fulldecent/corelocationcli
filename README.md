@@ -100,6 +100,16 @@ Then run your executable from this location:
 build/Release/CoreLocationCLI
 ```
 
+## macOS Gatekeeper/Notarization
+
+After trying to run `CoreLocationCLI` for the first time, the process will be blocked by Gatekeeper, and a system dialog will appear which includes
+
+> "CoreLocationCLI" can't be opened because it is from an unidentified developer...
+
+To approve the process and allow `CoreLocationCLI` to run, go to System Preferences ➡️ Security & Privacy ➡️ General, and look in the bottom right corner for a button to click.
+
+After approving `CoreLocationCLI`, it should run successfully. For more information, see https://support.apple.com/en-us/HT202491.
+
 ## Project scope
 
 This project exists to provide **a simple tool** for **getting a device's location**. It is expected that this will be **composed with other tools** or used directly for **testing** and **logging**.
