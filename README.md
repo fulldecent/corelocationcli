@@ -83,7 +83,7 @@ The default format is: `%latitude %longitude`.
 Install the latest release using Homebrew with:
 
 ```sh
-brew cask install corelocationcli
+brew install cask corelocationcli
 ```
 
 Or build from the command line using the Xcode compiler with one of these commands:
