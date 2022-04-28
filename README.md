@@ -91,13 +91,13 @@ Or build from the command line using the Xcode compiler with one of these comman
 ```sh
 xcodebuild # requires Apple Developer account
 # ... or ...
-swift build --disable-sandbox -c release --static-swift-stdlib # does not require account
+swift build --disable-sandbox -c release # does not require account
 ```
 
 Then run your executable from this location:
 
 ```sh
-build/Release/CoreLocationCLI
+./.build/arm64-apple-macosx/release/CoreLocationCLI --help
 ```
 
 ## macOS Gatekeeper/Notarization
