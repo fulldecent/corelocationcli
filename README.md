@@ -9,45 +9,47 @@ Note for Mac users: make sure Wi-Fi is turned on. Otherwise you will see `kCLErr
 ## Usage
 
 ```sh
-CoreLocationCLI -h
-CoreLocationCLI [-follow] [-verbose] [-format FORMAT]
-CoreLocationCLI [-follow] [-verbose] -json
+CoreLocationCLI --help
+CoreLocationCLI [--watch] [--verbose] [--format FORMAT]
+CoreLocationCLI [--watch] [--verbose] --json
 ```
 
-| Switch           | Description                                            |
-| ---------------- | ------------------------------------------------------ |
-| `-h`             | Display this help message and exit                     |
-| `-follow`        | Continually print location                             |
-| `-verbose`       | Show debugging output                                  |
-| `-format FORMAT` | Print a formatted string with the following specifiers |
-| `-json`          | JSON output mode                                       |
+| Switch            | Description                                        |
+| ----------------- | -------------------------------------------------- |
+| `-h`, `--help`    | Display this help message and exit                 |
+| `-w`, `--watch`   | Continually print location updates                 |
+| `-v`, `--verbose` | Show debugging output                              |
+| `-f`, `--format`  | Print a string with the specified substitutions    |
+| `-j`, `--json`    | Print a JSON object with all available information |
 
-| Format         | Description                              |
-| -------------- | ---------------------------------------- |
-| `%latitude`   | Latitude (degrees north; or negative for south) |
-| `%longitude`  | Longitude (degrees west; or negative for east) |
-| `%altitude`   | Altitude (meters)                        |
-| `%direction`  | Degrees from true north                  |
-| `%speed`      | Meters per second                        |
-| `%h_accuracy` | Horizontal accuracy (meters)             |
-| `%v_accuracy` | Vertical accuracy (meters)               |
-| `%time`       | Time                                     |
-| `%address`    | Reverse geocoded location to an address  |
-| `%name`       | Reverse geocoded place name |
-| `%isoCountryCode` | Reverse geocoded ISO country code |
-| `%country` | Reverse geocoded country name |
-| `%postalCode` | Reverse geocoded postal code |
-| `%administrativeArea` | Reverse geocoded state or province |
-| `%subAdministrativeArea` | additional administrative area information |
-| `%locality` | Reverse geocoded city name |
-| `%subLocality` | additional city-level information |
-| `%thoroughfare` | Reverse geocoded street address |
-| `%subThoroughfare` | additional street-level information |
-| `%region` | Reverse geocoded geographic region |
-| `%timeZone` | Reverse geocoded time zone |
-| `%time_local` | Localized time using reverse geocoded time zone |
+With the format specifiers:
 
-The default format is: `%latitude %longitude`.
+| Format                   | Description                                         |
+| ------------------------ | --------------------------------------------------- |
+| `%latitude`              | Latitude (degrees north; negative for south)        |
+| `%longitude`             | Longitude (degrees east; negative for west)         |
+| `%altitude`              | Altitude in meters                                  |
+| `%direction`             | Degrees from true north                             |
+| `%speed`                 | Speed in meters per second                          |
+| `%h_accuracy`            | Horizontal accuracy in meters                       |
+| `%v_accuracy`            | Vertical accuracy in meters                         |
+| `%time`                  | Timestamp of the location update                    |
+| `%address`               | Reverse geocoded address                            |
+| `%name`                  | Place name from reverse geocoding                   |
+| `%isoCountryCode`        | ISO country code from reverse geocoding             |
+| `%country`               | Country name from reverse geocoding                 |
+| `%postalCode`            | Postal code from reverse geocoding                  |
+| `%administrativeArea`    | State or province from reverse geocoding            |
+| `%subAdministrativeArea` | Additional administrative area information          |
+| `%locality`              | City name from reverse geocoding                    |
+| `%subLocality`           | Additional city-level information                   |
+| `%thoroughfare`          | Street address from reverse geocoding               |
+| `%subThoroughfare`       | Additional street-level information                 |
+| `%region`                | Geographic region from reverse geocoding            |
+| `%timeZone`              | Time zone from reverse geocoding                    |
+| `%time_local`            | Localized time using the reverse geocoded time zone |
+
+**Note:** The default format is `%latitude %longitude`.
 
 ## Output examples
 
@@ -60,7 +62,7 @@ The default format is: `%latitude %longitude`.
 > ```
 
 ```sh
-./CoreLocationCLI -format "%latitude %longitude\n%address"
+./CoreLocationCLI --format "%latitude %longitude\n%address"
 ```
 
 > ```text
@@ -71,7 +73,7 @@ The default format is: `%latitude %longitude`.
 > ```
 
 ```sh
-./CoreLocationCLI -json
+./CoreLocationCLI --json
 ```
 
 >```json
