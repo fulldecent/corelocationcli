@@ -55,7 +55,7 @@ The default format is: `%latitude %longitude`.
 ./CoreLocationCLI
 ```
 
-> ```
+> ```text
 > 50.943829 6.941043
 > ```
 
@@ -63,11 +63,11 @@ The default format is: `%latitude %longitude`.
 ./CoreLocationCLI -format "%latitude %longitude\n%address"
 ```
 
-> ```
+> ```text
 > 50.943829 6.941043
 > Kaiser-Wilhelm-Ring 21
-> 	Cologne North Rhine-Westphalia 50672
-> 	Germany
+>  Cologne North Rhine-Westphalia 50672
+>  Germany
 > ```
 
 ```sh
@@ -86,11 +86,9 @@ Install the latest release using Homebrew with:
 brew install cask corelocationcli
 ```
 
-Or build from the command line using the Xcode compiler with one of these commands:
+Or build from the command line using the compiler:
 
 ```sh
-xcodebuild # requires Apple Developer account
-# ... or ...
 swift build --disable-sandbox -c release # does not require account
 ```
 
@@ -106,9 +104,9 @@ After trying to run `CoreLocationCLI` for the first time, the process will be bl
 
 > "CoreLocationCLI" can't be opened because it is from an unidentified developer...
 
-To approve the process and allow `CoreLocationCLI` to run, go to System Preferences ➡️ Security & Privacy ➡️ General, and look in the bottom right corner for a button to click.
+To approve the process and allow `CoreLocationCLI` to run, go to System Settings ➡️ Privacy & Security ➡️ General, and look in the bottom right corner for a button to click.
 
-After approving `CoreLocationCLI`, it should run successfully. For more information, see https://support.apple.com/en-us/HT202491.
+After approving `CoreLocationCLI`, it should run successfully. For more information, see <https://support.apple.com/en-us/HT202491>.
 
 ## Project scope
 
@@ -118,7 +116,6 @@ The project maintainer was a victim of kidnapping in his past. Meanwhile his lap
 
 ## Contributing
 
-Considering the project scope, please report any issues at https://github.com/fulldecent/corelocationcli/issues and recommend a fix if possible.
+Considering the project scope, please report any issues at <https://github.com/fulldecent/corelocationcli/issues> and recommend a fix if possible.
 
-You can fund the project maintainer at https://github.com/sponsors/fulldecent. Even the most modest contribution will surely be noticed.
-
+You can fund the project maintainer at <https://github.com/sponsors/fulldecent>. Even the most modest contribution will surely be noticed.
