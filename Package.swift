@@ -12,6 +12,16 @@ let package = Package(
         .executable(name: "CoreLocationCLI", targets: ["CoreLocationCLI"])
     ],
     targets: [
-        .executableTarget(name: "CoreLocationCLI")
+        .executableTarget(
+            name: "CoreLocationCLI",
+            linkerSettings: [
+                .unsafeFlags([
+                    "-Xlinker", "-sectcreate",
+                    "-Xlinker", "__TEXT",
+                    "-Xlinker", "__info_plist",
+                    "-Xlinker", "Info.plist",
+                ])
+            ]
+        )
     ]
 )
