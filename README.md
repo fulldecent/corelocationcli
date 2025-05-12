@@ -90,17 +90,7 @@ Install the latest release using Homebrew with:
 brew install cask corelocationcli
 ```
 
-Or build from the command line using the compiler:
-
-```sh
-swift build --disable-sandbox -c release # does not require account
-```
-
-Then run your executable from this location:
-
-```sh
-./.build/arm64-apple-macosx/release/CoreLocationCLI --help
-```
+Or build from the command line. See [detailed build instructions](./RELEASE.md).
 
 ## macOS Gatekeeper/Notarization
 
