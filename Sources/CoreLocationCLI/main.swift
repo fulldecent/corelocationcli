@@ -140,6 +140,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
     func help() {
         print("""
         USAGE: CoreLocationCLI --help
+               CoreLocationCLI --version
                CoreLocationCLI [--watch] [--verbose] [--format FORMAT]
                CoreLocationCLI [--watch] [--verbose] --json
 
@@ -179,6 +180,11 @@ class Delegate: NSObject, CLLocationManagerDelegate {
           compatible with the JSON Lines text format.
         """)
     }
+
+    func version() {
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
+        print("CoreLocationCLI version \(version)")
+    }
 }
 
 let delegate = Delegate()
@@ -186,6 +192,9 @@ for (i, argument) in ProcessInfo().arguments.enumerated() {
     switch argument {
     case "-h", "--help":
         delegate.help()
+        exit(0)
+    case "--version":
+        delegate.version()
         exit(0)
     case "-w", "--watch":
         delegate.follow = true
