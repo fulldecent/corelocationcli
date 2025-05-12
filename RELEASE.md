@@ -15,7 +15,7 @@
    ./CoreLocationCLI.app/Contents/MacOS/CoreLocationCLI --json
    
    # Bundle it
-   zip CoreLocationCLI.zip CoreLocationCLI.app
+   zip -r CoreLocationCLI.zip CoreLocationCLI.app
    ```
 
 1. Draft the release using [GitHub Releases](https://github.com/fulldecent/corelocationcli/releases)
