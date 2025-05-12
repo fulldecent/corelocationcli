@@ -10,6 +10,7 @@ Note for Mac users: make sure Wi-Fi is turned on. Otherwise you will see `kCLErr
 
 ```sh
 CoreLocationCLI --help
+CoreLocationCLI --version
 CoreLocationCLI [--watch] [--verbose] [--format FORMAT]
 CoreLocationCLI [--watch] [--verbose] --json
 ```
@@ -17,6 +18,7 @@ CoreLocationCLI [--watch] [--verbose] --json
 | Switch            | Description                                        |
 | ----------------- | -------------------------------------------------- |
 | `-h`, `--help`    | Display this help message and exit                 |
+| `--version`       | Display the program version                        |
 | `-w`, `--watch`   | Continually print location updates                 |
 | `-v`, `--verbose` | Show debugging output                              |
 | `-f`, `--format`  | Print a string with the specified substitutions    |
