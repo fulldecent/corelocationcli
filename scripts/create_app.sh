@@ -258,7 +258,7 @@ if [[ $BREW_INSTALL =~ ^[Yy]$ ]]; then
         echo "🎉 Congratulations! You can now use CoreLocationCLI normally."
         echo ""
         echo "Tip: If you get an error like \"CoreLocationCLI: ❌ The operation couldn't be completed. (kCLErrorDomain error 0.)\","
-        echo "     try restarting your WiFi, as this might help resolve the issue."
+        echo "     try restarting your Wi-Fi, as this might help resolve the issue."
     else
         echo "Error: Could not find the original CoreLocationCLI executable."
     fi

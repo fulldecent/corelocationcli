@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# CoreLocationCLI Installation Script
+# CoreLocationCLI installation script
 
 echo "Installing CoreLocationCLI..."
 

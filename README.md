@@ -92,7 +92,7 @@ brew install cask corelocationcli
 
 Or build from the command line. See [detailed build instructions](./RELEASE.md).
 
-## macOS Gatekeeper/Notarization
+## macOS Gatekeeper/notarization
 
 After trying to run `CoreLocationCLI` for the first time, the process will be blocked by Gatekeeper, and a system dialog will appear which includes
 
@@ -110,6 +110,4 @@ The project maintainer was a victim of kidnapping in his past. Meanwhile his lap
 
 ## Contributing
 
-Considering the project scope, please report any issues at <https://github.com/fulldecent/corelocationcli/issues> and recommend a fix if possible.
-
-You can fund the project maintainer at <https://github.com/sponsors/fulldecent>. Even the most modest contribution will surely be noticed.
+Considering the project scope, please [report any issues](https://github.com/fulldecent/corelocationcli/issues) and [recommend a fix if possible](https://github.com/fulldecent/corelocationcli/pulls).
