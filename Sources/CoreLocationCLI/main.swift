@@ -130,7 +130,7 @@ class Delegate: NSObject, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         if error._code == 1 {
-            print("CoreLocationCLI: ❌ Location services are disabled or location access denied. Please visit System Preferences > Security & Privacy > Privacy > Location Services")
+            print("CoreLocationCLI: ❌ Location services are disabled or location access denied. Please visit System Settings > Privacy & Security > Location Services")
             exit(1)
         } 
         print("CoreLocationCLI: ❌ \(error.localizedDescription)")
