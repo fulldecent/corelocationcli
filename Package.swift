@@ -22,6 +22,10 @@ let package = Package(
                     "-Xlinker", "Info.plist",
                 ])
             ]
-        )
+        ),
+        .testTarget(
+            name: "CoreLocationCLITests",
+            dependencies: ["CoreLocationCLI"]
+        ),
     ]
 )
