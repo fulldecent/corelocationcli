@@ -98,7 +98,7 @@ After trying to run `CoreLocationCLI` for the first time, the process will be bl
 
 > "CoreLocationCLI" can't be opened because it is from an unidentified developer...
 
-To approve the process and allow `CoreLocationCLI` to run, go to System Settings ➡️ Privacy & Security ➡️ General, and look in the bottom right corner for a button to click.
+To approve the process and allow `CoreLocationCLI` to run, go to System Settings ➡️ Privacy & Security ➡️ Security, and look in the bottom right corner for a button to click.
 
 After approving `CoreLocationCLI`, it should run successfully. For more information, see <https://support.apple.com/en-us/HT202491>.
 
