@@ -1,42 +1,24 @@
 # CoreLocationCLI scripts guide
 
-## Quick start
+## build.sh
 
-Always run these scripts from the CoreLocationCLI project root directory (using the `./scripts/` prefix). This ensures all build paths are correctly resolved.
+Builds, signs, notarizes, and packages CoreLocationCLI for release.
 
-0. **Make scripts executable**:
+### Prerequisites
 
+1. A Developer ID Application certificate installed in Keychain
+2. Notarization credentials stored:
    ```bash
-   chmod +x scripts/*.sh  # Add execution permission to all scripts
+   xcrun notarytool store-credentials AC_PASSWORD \
+       --apple-id "your@email.com" \
+       --team-id "8Q693ZG5RN" \
+       --password "app-specific-password"
    ```
 
-1. **Install CoreLocationCLI**:
+### Usage
 
-   ```bash
-   ./scripts/install.sh  # Automatically installs via brew or builds from source
-   ```
+```bash
+./scripts/build.sh
+```
 
-   Note: The install script will use Homebrew if available, or build from source if not.
-
-2. **If you cannot get location permissions, create an app**:
-   Only execute this when experiencing permission issues:
-
-   ```bash
-   ./scripts/create_app.sh
-   ```
-
-   Follow the prompts to authorize the brew-installed version if needed.
-   When the app launches, allow location permissions in System Settings.
-
-   For more options and advanced usage:
-
-   ```bash
-   ./scripts/create_app.sh -h
-   ```
-
-## Script functions
-
-- **install.sh**: Automatically install via brew or build from source
-- **create_app.sh**: Resolve permission issues (use only when needed)
-
-If you encounter "(kCLErrorDomain error 0.)" error, try restarting your Wi-Fi as this might help.
+Output: `CoreLocationCLI.zip` (signed and notarized app bundle)
