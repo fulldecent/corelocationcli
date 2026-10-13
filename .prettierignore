@@ -1,0 +1,6 @@
+*.md
+*.pbxproj
+*.xcscheme
+*.xcworkspacedata
+Gemfile.lock
+CHANGELOG.md

@@ -1,5 +1,7 @@
 # CoreLocationCLI
 
+[![CI](https://github.com/fulldecent/corelocationcli/actions/workflows/ci.yml/badge.svg)](https://github.com/fulldecent/corelocationcli/actions/workflows/ci.yml) [![Lint](https://github.com/fulldecent/corelocationcli/actions/workflows/lint.yml/badge.svg)](https://github.com/fulldecent/corelocationcli/actions/workflows/lint.yml)
+
 CoreLocationCLI gets the physical location of your device and prints it to standard output. If you move it can also print your updated location. *Kill it with CTRL-C.*
 
 ![Usage](https://cloud.githubusercontent.com/assets/382183/25063655/52c11234-221d-11e7-81fb-0f8712dac393.gif)
@@ -115,4 +117,5 @@ See [RELEASE.md](RELEASE.md).
 ## References
 
 1. Releases follow [best practices documented in swift-app-template](https://github.com/fulldecent/swift-app-template), release 1.1.0. Release Please uses the `simple` release type, a `VERSION` file, and the merged release pull request as the only publish trigger. `include-v-in-tag` is false, because the Homebrew cask downloads `releases/download/<version>/CoreLocationCLI.zip`. The template's tag is `v<version>`. This repository publishes the stapled zip. The template uploads an iOS build and a macOS build to TestFlight. The workflow creates the GitHub release after that build succeeds, which is the gate in that template's [release workflow](https://github.com/fulldecent/swift-app-template/blob/v1.1.0/.github/workflows/release.yml).
+1. [lint.yml](.github/workflows/lint.yml), [.editorconfig](.editorconfig), [.markdownlint.json](.markdownlint.json), [.markdownlintignore](.markdownlintignore), and [.prettierignore](.prettierignore) are the lint files from [swift-app-template](https://github.com/fulldecent/swift-app-template) release 1.1.0. Prettier and markdownlint run there. `swift format` runs in [ci.yml](.github/workflows/ci.yml) on `Sources` and `Tests`. The template formats an Xcode app and tests it on the iPhone 17 simulator. This repository is a Swift package.
 1. The release attestation follows [rust-template](https://github.com/fulldecent/rust-template) release 1.1.0. [actions/attest](https://github.com/actions/attest) signs `CoreLocationCLI.zip` twice. Passing no predicate selects [SLSA Provenance v1](https://slsa.dev/spec/v1.0/provenance). The second statement is `urn:version` with `{"version":"<version>"}`. The value is the release tag and has no leading `v`. Both lines are `release.sigstore.jsonl`. Checking them follows [`gh attestation verify`](https://cli.github.com/manual/gh_attestation_verify). The commands are in [RELEASE.md](RELEASE.md). rust-template attests provenance in the build job. This repository attests both statements in the publish job, after notarization, because that is the only job that produces the zip.

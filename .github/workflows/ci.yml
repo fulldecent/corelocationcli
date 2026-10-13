@@ -17,5 +17,10 @@ jobs:
       - name: Check out this commit
         uses: actions/checkout@v5
 
+      - name: Check formatting
+        run: |
+          swift format format --in-place --recursive Sources Tests
+          git diff --exit-code || (echo 'Code is not formatted. Run: swift format format --in-place --recursive Sources Tests' && exit 1)
+
       - name: Test
         run: swift test
