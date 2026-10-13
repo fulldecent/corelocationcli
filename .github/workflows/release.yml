@@ -170,7 +170,7 @@ jobs:
           TAG: ${{ needs.propose.outputs.tag_name }}
         run: |
           set -euo pipefail
-          version=$(tr -d '[:space:]' < VERSION)
+          version=$(grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' VERSION | head -1)
           if [ "$TAG" != "$version" ]; then
             echo "tag $TAG does not match VERSION $version" >&2
             exit 1

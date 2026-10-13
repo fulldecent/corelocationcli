@@ -14,7 +14,7 @@ set -e
 SIGNING_IDENTITY="${SIGNING_IDENTITY:-Developer ID Application: William Entriken (8Q693ZG5RN)}"
 KEYCHAIN_PROFILE="${KEYCHAIN_PROFILE:-AC_PASSWORD}"
 
-version=$(tr -d '[:space:]' < VERSION)
+version=$(grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' VERSION | head -1)
 plist_version=$(defaults read "$(pwd)/Info" CFBundleShortVersionString)
 if [ "$version" != "$plist_version" ]; then
   echo "VERSION $version does not match Info.plist $plist_version" >&2

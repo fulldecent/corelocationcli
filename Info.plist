@@ -13,8 +13,7 @@
 		<key>CFBundleVersion</key>
 		<string>1.0</string>
 		<key>CFBundleShortVersionString</key>
-		<!-- x-release-please-version -->
-		<string>4.0.7</string>
+		<string>4.0.7</string> <!-- x-release-please-version -->
 		<key>NSLocationUsageDescription</key>
 		<string>This application requires location services to function.</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
