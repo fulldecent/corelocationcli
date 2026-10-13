@@ -87,20 +87,16 @@ With the format specifiers:
 Install the latest release using Homebrew with:
 
 ```sh
-brew install cask corelocationcli
+brew install --cask corelocationcli
 ```
 
-Or build from the command line. See [detailed build instructions](./RELEASE.md).
+Or build from the command line. See [RELEASE.md](./RELEASE.md).
 
-## macOS Gatekeeper/notarization
+## macOS Gatekeeper
 
-After trying to run `CoreLocationCLI` for the first time, the process will be blocked by Gatekeeper, and a system dialog will appear which includes
+The Homebrew cask installs the notarized GitHub release. Gatekeeper accepts that copy.
 
-> "CoreLocationCLI" can't be opened because it is from an unidentified developer...
-
-To approve the process and allow `CoreLocationCLI` to run, go to System Settings ➡️ Privacy & Security ➡️ Security, and look in the bottom right corner for a button to click.
-
-After approving `CoreLocationCLI`, it should run successfully. For more information, see <https://support.apple.com/en-us/HT202491>.
+A dialog that says "CoreLocationCLI" can't be opened because it is from an unidentified developer means the copy was not that notarized release. Approve it in System Settings, Privacy & Security. See <https://support.apple.com/en-us/HT202491>.
 
 ## Project scope
 
@@ -111,3 +107,7 @@ The project maintainer was a victim of kidnapping in his past. Meanwhile his lap
 ## Contributing
 
 Considering the project scope, please [report any issues](https://github.com/fulldecent/corelocationcli/issues) and [recommend a fix if possible](https://github.com/fulldecent/corelocationcli/pulls).
+
+## Releasing
+
+Use `fix:`, `feat:`, or `BREAKING CHANGE:` in commit messages. Release Please opens a pull request from those. Merging it publishes the notarized zip. The steps and the template citation are in [RELEASE.md](RELEASE.md).

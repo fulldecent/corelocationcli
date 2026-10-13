@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  workflow_call:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test:
+    name: Build and test
+    runs-on: macos-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out this commit
+        uses: actions/checkout@v5
+
+      - name: Test
+        run: swift test

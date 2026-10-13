@@ -1,0 +1,18 @@
+{
+  "release-type": "simple",
+  "include-component-in-tag": false,
+  "include-v-in-tag": false,
+  "extra-files": [
+    {
+      "type": "generic",
+      "path": "VERSION"
+    },
+    {
+      "type": "generic",
+      "path": "Info.plist"
+    }
+  ],
+  "packages": {
+    ".": {}
+  }
+}
