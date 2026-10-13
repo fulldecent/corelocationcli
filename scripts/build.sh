@@ -2,14 +2,7 @@
 set -e
 
 # Sign with Developer ID, notarize, staple, and write CoreLocationCLI.zip.
-# VERSION and Info.plist CFBundleShortVersionString must already match.
-# Release Please updates both. The Swift --version flag reads the plist
-# from the app bundle this script copies into place.
-#
-# Local notarization uses the notarytool keychain profile AC_PASSWORD.
-# GitHub Actions sets APP_STORE_CONNECT_KEY_PATH, APP_STORE_CONNECT_KEY_ID,
-# and APP_STORE_CONNECT_ISSUER_ID instead. That key is a team key with the
-# Developer role. An individual key cannot call notarytool.
+# Stops when VERSION and Info.plist CFBundleShortVersionString differ.
 
 SIGNING_IDENTITY="${SIGNING_IDENTITY:-Developer ID Application: William Entriken (8Q693ZG5RN)}"
 KEYCHAIN_PROFILE="${KEYCHAIN_PROFILE:-AC_PASSWORD}"
@@ -38,6 +31,9 @@ codesign --verify --verbose=2 CoreLocationCLI.app
 ditto -c -k --keepParent CoreLocationCLI.app CoreLocationCLI.zip
 
 echo "Submitting for notarization..."
+# This machine uses the notarytool keychain profile AC_PASSWORD.
+# GitHub Actions sets the team API key variables instead.
+# An individual key cannot call notarytool.
 if [ -n "${APP_STORE_CONNECT_KEY_PATH:-}" ]; then
   xcrun notarytool submit CoreLocationCLI.zip \
     --key "$APP_STORE_CONNECT_KEY_PATH" \

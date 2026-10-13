@@ -22,11 +22,7 @@
 # provenance in its build job and passes the binary across as an artifact.
 #
 # Public repositories can use attest for free. Private repos require Enterprise Cloud.
-#
-# Check a published file:
-#   gh attestation verify ./CoreLocationCLI.zip -R fulldecent/corelocationcli
-#   gh attestation verify ./CoreLocationCLI.zip -R fulldecent/corelocationcli --bundle ./release.sigstore.jsonl
-#   gh attestation verify ./CoreLocationCLI.zip -R fulldecent/corelocationcli --bundle ./release.sigstore.jsonl --predicate-type urn:version
+# The verify commands are in RELEASE.md.
 
 name: Release
 

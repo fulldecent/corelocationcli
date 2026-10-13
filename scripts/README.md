@@ -13,7 +13,7 @@ Builds a universal binary, signs it with the Developer ID Application certificat
 
    ```sh
    xcrun notarytool store-credentials AC_PASSWORD \
-       --apple-id "your@email.com" \
+       --apple-id "example@example.com" \
        --team-id "8Q693ZG5RN" \
        --password "app-specific-password"
    ```
@@ -22,6 +22,4 @@ Builds a universal binary, signs it with the Developer ID Application certificat
 ./scripts/build.sh
 ```
 
-To notarize with an App Store Connect team key instead of the keychain profile, set `APP_STORE_CONNECT_KEY_PATH`, `APP_STORE_CONNECT_KEY_ID`, and `APP_STORE_CONNECT_ISSUER_ID`. The key has to be a team key. An individual key cannot call `notarytool`.
-
-GitHub Actions sets those three variables from repository secrets and imports the Developer ID certificate before it runs this script. The release steps are in [RELEASE.md](../RELEASE.md).
+The release is in [RELEASE.md](../RELEASE.md). GitHub Actions uses a team API key instead of this keychain profile.

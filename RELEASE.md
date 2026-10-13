@@ -23,6 +23,6 @@ The notary credential is a team API key with the Developer role. An individual k
 * `DEVELOPER_ID_APPLICATION_P12` (base64 of the Developer ID Application `.p12`)
 * `DEVELOPER_ID_APPLICATION_P12_PASSWORD`
 
-A local build still uses [scripts/build.sh](scripts/build.sh). Store a notarytool keychain profile named `AC_PASSWORD`, or set `APP_STORE_CONNECT_KEY_PATH`, `APP_STORE_CONNECT_KEY_ID`, and `APP_STORE_CONNECT_ISSUER_ID`.
+A local build is [scripts/README.md](scripts/README.md).
 
 The template citation is in the [README References](README.md#references).
