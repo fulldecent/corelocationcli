@@ -110,4 +110,8 @@ Considering the project scope, please [report any issues](https://github.com/ful
 
 ## Releasing
 
-Use `fix:`, `feat:`, or `BREAKING CHANGE:` in commit messages. Release Please opens a pull request from those. Merging it publishes the notarized zip. The steps and the template citation are in [RELEASE.md](RELEASE.md).
+Use `fix:`, `feat:`, or `BREAKING CHANGE:` in commit messages. Release Please opens a pull request from those. Merging it publishes the notarized zip. The steps are in [RELEASE.md](RELEASE.md).
+
+## References
+
+1. Releases follow [best practices documented in swift-app-template](https://github.com/fulldecent/swift-app-template), release 1.1.0. Release Please uses the `simple` release type, a `VERSION` file, and the merged release pull request as the only publish trigger. `include-v-in-tag` is false, because the Homebrew cask downloads `releases/download/<version>/CoreLocationCLI.zip`. The template's tag is `v<version>`. This repository publishes the stapled zip. The template uploads an iOS build and a macOS build to TestFlight. The workflow creates the GitHub release after that build succeeds, which is the gate in that template's [release workflow](https://github.com/fulldecent/swift-app-template/blob/v1.1.0/.github/workflows/release.yml).

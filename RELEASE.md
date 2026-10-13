@@ -18,4 +18,4 @@ The notary credential is a team API key with the Developer role. An individual k
 
 A local build still uses [scripts/build.sh](scripts/build.sh). Store a notarytool keychain profile named `AC_PASSWORD`, or set `APP_STORE_CONNECT_KEY_PATH`, `APP_STORE_CONNECT_KEY_ID`, and `APP_STORE_CONNECT_ISSUER_ID`.
 
-Release Please is configured the way [swift-app-template](https://github.com/fulldecent/swift-app-template) release 1.1.0 configures it, with two differences. `include-v-in-tag` is false, because this cask's URL has no `v`. The workflow publishes the stapled zip instead of uploading to TestFlight. The same "create the GitHub release after the build succeeds" gate is the one in [8 Ball Answer](https://github.com/fulldecent/8-ball-answer/blob/main/.github/workflows/release.yml).
+The template citation is in the [README References](README.md#references).
