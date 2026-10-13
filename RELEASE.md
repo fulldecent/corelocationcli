@@ -2,7 +2,14 @@
 
 Use `fix:`, `feat:`, or `BREAKING CHANGE:` in the commit message. Release Please opens a pull request from those commits. `ci:` and `chore:` do not. The pull request updates [VERSION](VERSION), `CFBundleShortVersionString` in [Info.plist](Info.plist), and [CHANGELOG.md](CHANGELOG.md). Do not edit those version lines by hand.
 
-Merging that pull request is the release. GitHub Actions builds the universal binary, signs it with the Developer ID Application certificate, notarizes it, staples the ticket, and publishes `CoreLocationCLI.zip` on a GitHub release. The tag is the version with no `v` prefix. The [Homebrew cask](https://github.com/Homebrew/homebrew-cask/blob/master/Casks/c/corelocationcli.rb) downloads `https://github.com/fulldecent/corelocationcli/releases/download/<version>/CoreLocationCLI.zip`.
+Merging that pull request is the release. GitHub Actions builds the universal binary, signs it with the Developer ID Application certificate, notarizes it, staples the ticket, and publishes `CoreLocationCLI.zip` and `release.sigstore.jsonl` on a GitHub release. The tag is the version with no `v` prefix. The [Homebrew cask](https://github.com/Homebrew/homebrew-cask/blob/master/Casks/c/corelocationcli.rb) downloads `https://github.com/fulldecent/corelocationcli/releases/download/<version>/CoreLocationCLI.zip`.
+
+`release.sigstore.jsonl` has two statements for that zip. The first is SLSA Provenance. The second is `urn:version` and its version is the tag. Check a downloaded copy with:
+
+```sh
+gh attestation verify ./CoreLocationCLI.zip -R fulldecent/corelocationcli --bundle ./release.sigstore.jsonl
+gh attestation verify ./CoreLocationCLI.zip -R fulldecent/corelocationcli --bundle ./release.sigstore.jsonl --predicate-type urn:version
+```
 
 `--version` reads `CFBundleShortVersionString` from the app bundle. There is no version literal in the Swift source.
 

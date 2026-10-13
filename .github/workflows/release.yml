@@ -13,6 +13,20 @@
 # The cask is on Homebrew's autobump list. BrewTestBot opens the cask pull
 # request. This workflow does not run brew bump-cask-pr.
 # https://docs.brew.sh/Autobump
+#
+# The published zip is attested the way rust-template release 1.1.0 attests
+# its binary: actions/attest with no predicate (SLSA Provenance v1), then a
+# second statement, urn:version, with {"version":"<version>"}. Both lines go
+# in release.sigstore.jsonl. Both attestations run in this publish job because
+# the notarized zip does not exist in the test job. rust-template attests
+# provenance in its build job and passes the binary across as an artifact.
+#
+# Public repositories can use attest for free. Private repos require Enterprise Cloud.
+#
+# Check a published file:
+#   gh attestation verify ./CoreLocationCLI.zip -R fulldecent/corelocationcli
+#   gh attestation verify ./CoreLocationCLI.zip -R fulldecent/corelocationcli --bundle ./release.sigstore.jsonl
+#   gh attestation verify ./CoreLocationCLI.zip -R fulldecent/corelocationcli --bundle ./release.sigstore.jsonl --predicate-type urn:version
 
 name: Release
 
@@ -69,6 +83,12 @@ jobs:
     if: needs.test.result == 'success' && needs.propose.outputs.tag_name != ''
     runs-on: macos-latest
     timeout-minutes: 60
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+      attestations: write
+      artifact-metadata: write
     steps:
       - name: Check out this commit
         uses: actions/checkout@v5
@@ -114,7 +134,37 @@ jobs:
           APP_STORE_CONNECT_KEY_PATH: ${{ runner.temp }}/AuthKey.p8
         run: ./scripts/build.sh
 
-      - name: Publish the GitHub release
+      - name: Collect the zip
+        run: |
+          set -euo pipefail
+          mkdir dist
+          mv CoreLocationCLI.zip dist/
+
+      - name: Attest the build
+        id: attest
+        uses: actions/attest@v4
+        with:
+          subject-path: dist/*
+
+      - name: Attest the version
+        id: version
+        uses: actions/attest@v4
+        with:
+          subject-path: dist/*
+          predicate-type: urn:version
+          predicate: ${{ format('{{"version":"{0}"}}', needs.propose.outputs.tag_name) }}
+
+      # dist/* was already attested. Write the sidecar after, so it is not a subject.
+      - name: Write the sidecar
+        env:
+          PROVENANCE_BUNDLE: ${{ steps.attest.outputs.bundle-path }}
+          VERSION_BUNDLE: ${{ steps.version.outputs.bundle-path }}
+        run: |
+          set -euo pipefail
+          jq -c . "$PROVENANCE_BUNDLE" > dist/release.sigstore.jsonl
+          jq -c . "$VERSION_BUNDLE" >> dist/release.sigstore.jsonl
+
+      - name: Check the sidecar
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ needs.propose.outputs.tag_name }}
@@ -125,7 +175,21 @@ jobs:
             echo "tag $TAG does not match VERSION $version" >&2
             exit 1
           fi
-          gh release create "$TAG" CoreLocationCLI.zip \
+          for f in dist/*; do
+            [ "$f" = dist/release.sigstore.jsonl ] && continue
+            gh attestation verify "$f" -R "$GITHUB_REPOSITORY" --bundle dist/release.sigstore.jsonl
+            gh attestation verify "$f" -R "$GITHUB_REPOSITORY" --bundle dist/release.sigstore.jsonl \
+              --predicate-type urn:version
+          done
+
+      - name: Publish the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.propose.outputs.tag_name }}
+        run: |
+          set -euo pipefail
+          # One call, files included. A later upload fails once release immutability is on.
+          gh release create "$TAG" dist/* \
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title "$TAG" \
