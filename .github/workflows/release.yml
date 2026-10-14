@@ -87,7 +87,7 @@ jobs:
       artifact-metadata: write
     steps:
       - name: Check out this commit
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Import the Developer ID certificate
         env:
